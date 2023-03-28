@@ -37,8 +37,7 @@ namespace PV221_CSharp
         }
 
 
-
-        public int MyProperty { get; set; }
+        public int MyProperty { get; set; } = 100;
 
 
 

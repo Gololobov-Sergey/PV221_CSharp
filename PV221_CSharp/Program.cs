@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using PV221_CSharp.CarNC;
+
+//using static System.Console;
+
+using NC4 = PV221_CSharp.CarNC.NC3;
 
 namespace PV221_CSharp
 {
@@ -57,6 +62,48 @@ namespace PV221_CSharp
             Console.Clear();
 
 
+            ///////////////////////////
+            //                       //  
+            /////// 28.03.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+
+
+            Stud st = new Stud()
+            {
+                FirstName = "Oleg",
+                LastName = "Zubkov",
+                Group = "PV221"
+            };
+
+
+            st.AddMark(course: Course.Admin, mark: 12);
+            st.AddMark(course: Course.Programm, mark: 11);
+            st.AddMark(course: Course.Programm, mark: 10);
+            st.AddMark(course: Course.Design, mark: 12);
+            st.AddMark(course: Course.Programm, mark: 8);
+            st.AddMark(course: Course.Admin, mark: 10);
+
+            st.Info();
+
+            Console.WriteLine(st.GetLastMark(Course.Programm));
+
+            Console.WriteLine(Math.Round(st.GetAvarageCourse(Course.Programm), 1));
+
+
+            //Car car = new Car() 
+            //{ 
+            //    Vendor = "BMW", 
+            //    Model = "X7", 
+            //    Year = 2023
+            //};
+
+            //car.Print();
+
+            //CarNC.NC3.CargoCar cc = new();
+            //NC4.CargoCar ccc = new();
 
 
             ///////////////////////////
@@ -66,31 +113,31 @@ namespace PV221_CSharp
             ///////////////////////////
 
 
-            int a = 9;
-            int b;
-            int[] arr = { 1, 2, 3 };
-            Func(ref a, ref arr, out b);
+            //int a = 9;
+            //int b;
+            //int[] arr = { 1, 2, 3 };
+            //Func(ref a, ref arr, out b);
 
-            Console.WriteLine(a);
+            //Console.WriteLine(a);
 
-            foreach (var item in arr)
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
+            //foreach (var item in arr)
+            //{
+            //    Console.Write(item + " ");
+            //}
+            //Console.WriteLine();
 
-            Console.WriteLine( b);
+            //Console.WriteLine( b);
 
-            Console.WriteLine(  Sum(1,2, 3 ,4,5,6)  );
+            //Console.WriteLine(  Sum(1,2, 3 ,4,5,6)  );
 
 
-            //Student.SetPlanet("Mars");
+            ////Student.SetPlanet("Mars");
 
-            Student st;
-            st = new Student();
+            //Student st;
+            //st = new Student();
 
-            Console.WriteLine(st.Name);
-            st.Name = "Oleg";
+            //Console.WriteLine(st.Name);
+            //st.Name = "Oleg";
 
             //st.Print();
             //Console.WriteLine(st.group_id);
