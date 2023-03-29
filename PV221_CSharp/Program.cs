@@ -64,6 +64,83 @@ namespace PV221_CSharp
 
             ///////////////////////////
             //                       //  
+            /////// 29.03.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+            //Point p = new Point { X = 10, Y = 15 };
+            //p.Print();
+            //Point p2 = -p;
+            //p2.Print();
+
+            //p2++;
+            //p2.Print();
+
+            //++p2;
+            //p2.Print();
+
+            //(+p2).Print();
+
+            //(++p2).Print();
+
+            //Point p1 = new Point { X = 3, Y = 5 };
+
+            //Point p3 = p + p1;
+            //p3.Print();
+
+            //p += p1; // p = p + p1;
+            //p.Print();
+
+            //p3 = p + 44;
+            //p3 = 44 + p;
+
+            //p += 44;
+
+
+
+            //Point p = new Point { X = 10, Y = 15 };
+            //Point p1 = p;
+            //Console.WriteLine(ReferenceEquals(p, p1));
+            //Console.WriteLine(p.Equals(p1));
+
+            //Console.WriteLine(p1);
+
+            //if(p1 && p)
+            //{
+            //    Console.WriteLine(p);
+            //}
+
+            //bool b = (bool)p1;
+
+            //double d = p;
+
+            //p = 10;
+
+            //Stud st = new Stud();
+            //p = (Point)st;
+
+            //string st = null;
+            //int? c = null;
+            //Console.WriteLine(c);
+            //c = c ?? 30;
+
+
+            Polygon p = new Polygon(5);
+            Console.WriteLine(p);
+            Console.WriteLine(p["one"]);
+            p[3] = new Point { X = 4, Y = 5 };
+            Console.WriteLine(p["one"]);
+            //p["one"] = new Point { X = 5, Y = 6 };
+
+
+            Matrix m = new(3, 4);
+            Console.WriteLine(m[2,2]);
+            m[2, 1] = 100;
+
+
+            ///////////////////////////
+            //                       //  
             /////// 28.03.2023  ///////
             //                       //
             ///////////////////////////
@@ -71,26 +148,26 @@ namespace PV221_CSharp
 
 
 
-            Stud st = new Stud()
-            {
-                FirstName = "Oleg",
-                LastName = "Zubkov",
-                Group = "PV221"
-            };
+            //Stud st = new Stud()
+            //{
+            //    FirstName = "Oleg",
+            //    LastName = "Zubkov",
+            //    Group = "PV221"
+            //};
 
 
-            st.AddMark(course: Course.Admin, mark: 12);
-            st.AddMark(course: Course.Programm, mark: 11);
-            st.AddMark(course: Course.Programm, mark: 10);
-            st.AddMark(course: Course.Design, mark: 12);
-            st.AddMark(course: Course.Programm, mark: 8);
-            st.AddMark(course: Course.Admin, mark: 10);
+            //st.AddMark(course: Course.Admin, mark: 12);
+            //st.AddMark(course: Course.Programm, mark: 11);
+            //st.AddMark(course: Course.Programm, mark: 10);
+            //st.AddMark(course: Course.Design, mark: 12);
+            //st.AddMark(course: Course.Programm, mark: 8);
+            //st.AddMark(course: Course.Admin, mark: 10);
 
-            st.Info();
+            //st.Info();
 
-            Console.WriteLine(st.GetLastMark(Course.Programm));
+            //Console.WriteLine(st.GetLastMark(Course.Programm));
 
-            Console.WriteLine(Math.Round(st.GetAvarageCourse(Course.Programm), 1));
+            //Console.WriteLine(Math.Round(st.GetAvarageCourse(Course.Programm), 1));
 
 
             //Car car = new Car() 
