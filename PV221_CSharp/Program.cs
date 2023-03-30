@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using PV221_CSharp.CarNC;
 
@@ -61,6 +62,84 @@ namespace PV221_CSharp
             Console.Title = "PV211";
             Console.Clear();
 
+            ///////////////////////////
+            //                       //  
+            /////// 30.03.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+            //Human e = new Employee("Egor", "Krutogolov", 50000);
+            //Console.WriteLine(e);
+            //e.Print();
+
+            Human director = new Director("Egor", "Krutogolov", 50000, 3);
+            Human[] employees = {
+                director,
+                new Economist("Olga", "Petrova", 30000, 10),
+                new CleaningManager("Maria", "Ivanova", 10000, 100)
+            };
+
+
+            foreach (Human item in employees)
+            {
+                Console.WriteLine(item);
+                item.Dancing();
+
+
+                //try
+                //{
+                //    ((Director)item).PrintSubordinate();
+                //}
+                //catch (Exception)
+                //{
+                //    Console.WriteLine("Not director");
+                //}
+
+
+                //Economist eco = item as Economist;
+                //if(eco != null)
+                //{
+                //    eco.PrintExperience();
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Not Economist");
+                //}
+
+
+                //if(item is CleaningManager)
+                //{
+                //    (item as CleaningManager).PrintCleaningArea();
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Not CleaningManager");
+                //}
+
+                Console.WriteLine("=======================================");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine(director.GetType().BaseType);
+            var s = director.GetType().GetMethods();
+            foreach (var item in s)
+            {
+                Console.WriteLine(item);
+            }
+
+            var s1 = director.GetType().GetConstructors();
+            foreach (ConstructorInfo item in s1)
+            {
+                Console.WriteLine(item);
+            }
+
+            var s2 = director.GetType().GUID;
+            Console.WriteLine(s2);
+            //foreach (ConstructorInfo item in s1)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
             ///////////////////////////
             //                       //  
@@ -126,17 +205,17 @@ namespace PV221_CSharp
             //c = c ?? 30;
 
 
-            Polygon p = new Polygon(5);
-            Console.WriteLine(p);
-            Console.WriteLine(p["one"]);
-            p[3] = new Point { X = 4, Y = 5 };
-            Console.WriteLine(p["one"]);
-            //p["one"] = new Point { X = 5, Y = 6 };
+            //Polygon p = new Polygon(5);
+            //Console.WriteLine(p);
+            //Console.WriteLine(p["one"]);
+            //p[3] = new Point { X = 4, Y = 5 };
+            //Console.WriteLine(p["one"]);
+            ////p["one"] = new Point { X = 5, Y = 6 };
 
 
-            Matrix m = new(3, 4);
-            Console.WriteLine(m[2,2]);
-            m[2, 1] = 100;
+            //Matrix m = new(3, 4);
+            //Console.WriteLine(m[2,2]);
+            //m[2, 1] = 100;
 
 
             ///////////////////////////
@@ -144,9 +223,6 @@ namespace PV221_CSharp
             /////// 28.03.2023  ///////
             //                       //
             ///////////////////////////
-
-
-
 
             //Stud st = new Stud()
             //{
@@ -169,6 +245,9 @@ namespace PV221_CSharp
 
             //Console.WriteLine(Math.Round(st.GetAvarageCourse(Course.Programm), 1));
 
+            //st[Course.Programm] = "9";
+
+            //Console.WriteLine(st[Course.Programm]);
 
             //Car car = new Car() 
             //{ 

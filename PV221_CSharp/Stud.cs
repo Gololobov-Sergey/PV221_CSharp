@@ -66,5 +66,22 @@ namespace PV221_CSharp
             }
             return sum / marks[(int)course].Length;
         }
+
+        public string this[Course course]
+        {
+            get
+            {
+                return $"{course}: " + string.Join(", ", marks[(int)course]);
+            }
+
+            set
+            {
+                int mark;
+                if(Int32.TryParse(value, out mark))
+                {
+                    AddMark(course, mark);
+                }
+            }
+        }
     }
 }
