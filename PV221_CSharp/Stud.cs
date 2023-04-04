@@ -11,12 +11,18 @@ namespace PV221_CSharp
         Programm, Admin, Design, SQL
     }
 
-    internal class Stud
+    internal class Stud : IIndex
     {
         int[][] marks;
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Group { get; set; }
+
+        public string this[int index] 
+        {
+            get { return this[(Course)index]; } 
+            set => throw new NotImplementedException(); 
+        }
 
         public Stud()
         {

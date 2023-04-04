@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -52,6 +53,10 @@ namespace PV221_CSharp
         }
 
 
+        public static void Print(IIndex index, int ind)
+        {
+            Console.WriteLine(index[ind]);
+        }
 
 
         static void Main(string[] args)
@@ -64,6 +69,75 @@ namespace PV221_CSharp
 
             ///////////////////////////
             //                       //  
+            /////// 04.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+
+            Group pv221 = new Group();
+            foreach (Student item in pv221)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine( );
+
+            pv221.Sort(new DateComparer());
+
+            foreach (Student item in pv221)
+            {
+                Console.WriteLine(item);
+            }
+
+
+            //Inter inter = new Inter();
+            //inter.Show();
+            //(inter as IA).Show();
+
+            //IA ia = new Inter();
+            //ia.Show();
+
+            //IB ib = new Inter();
+            //ib.Show();
+
+            //IC ic = new Inter();
+            //ic.Show();
+
+
+
+            //Employee worker1 = new Manager();
+            //Employee worker2 = new Brigadir();
+
+            //List<Employee> workers = new List<Employee>();
+            //workers.Add(worker1);
+            //workers.Add(worker2);
+
+            //foreach (var item in workers)
+            //{
+
+            //    if(item is IWorker)
+            //    {
+            //        IWorker w = item as IWorker;
+            //        Console.WriteLine( w.IsWork);
+            //        w.Work();
+            //    }
+
+            //    if(item is IManager)
+            //    {
+            //        IManager m = item as IManager;
+            //        m.CreateReport();
+            //        m.Control();
+            //    }
+            //}
+
+            //Collection collection = new();
+
+            //Console.WriteLine(collection[2]);
+
+            //Print(collection, 2);
+
+            ///////////////////////////
+            //                       //  
             /////// 30.03.2023  ///////
             //                       //
             ///////////////////////////
@@ -73,69 +147,69 @@ namespace PV221_CSharp
             //Console.WriteLine(e);
             //e.Print();
 
-            Human director = new Director("Egor", "Krutogolov", 50000, 3);
-            Human[] employees = {
-                director,
-                new Economist("Olga", "Petrova", 30000, 10),
-                new CleaningManager("Maria", "Ivanova", 10000, 100)
-            };
+            //Human director = new Director("Egor", "Krutogolov", 50000, 3);
+            //Human[] employees = {
+            //    director,
+            //    new Economist("Olga", "Petrova", 30000, 10),
+            //    new CleaningManager("Maria", "Ivanova", 10000, 100)
+            //};
 
 
-            foreach (Human item in employees)
-            {
-                Console.WriteLine(item);
-                item.Dancing();
+            //foreach (Human item in employees)
+            //{
+            //    Console.WriteLine(item);
+            //    item.Dancing();
 
 
-                //try
-                //{
-                //    ((Director)item).PrintSubordinate();
-                //}
-                //catch (Exception)
-                //{
-                //    Console.WriteLine("Not director");
-                //}
+            //    //try
+            //    //{
+            //    //    ((Director)item).PrintSubordinate();
+            //    //}
+            //    //catch (Exception)
+            //    //{
+            //    //    Console.WriteLine("Not director");
+            //    //}
 
 
-                //Economist eco = item as Economist;
-                //if(eco != null)
-                //{
-                //    eco.PrintExperience();
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Not Economist");
-                //}
+            //    //Economist eco = item as Economist;
+            //    //if(eco != null)
+            //    //{
+            //    //    eco.PrintExperience();
+            //    //}
+            //    //else
+            //    //{
+            //    //    Console.WriteLine("Not Economist");
+            //    //}
 
 
-                //if(item is CleaningManager)
-                //{
-                //    (item as CleaningManager).PrintCleaningArea();
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Not CleaningManager");
-                //}
+            //    //if(item is CleaningManager)
+            //    //{
+            //    //    (item as CleaningManager).PrintCleaningArea();
+            //    //}
+            //    //else
+            //    //{
+            //    //    Console.WriteLine("Not CleaningManager");
+            //    //}
 
-                Console.WriteLine("=======================================");
-                Console.WriteLine();
-            }
+            //    Console.WriteLine("=======================================");
+            //    Console.WriteLine();
+            //}
 
-            Console.WriteLine(director.GetType().BaseType);
-            var s = director.GetType().GetMethods();
-            foreach (var item in s)
-            {
-                Console.WriteLine(item);
-            }
+            //Console.WriteLine(director.GetType().BaseType);
+            //var s = director.GetType().GetMethods();
+            //foreach (var item in s)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-            var s1 = director.GetType().GetConstructors();
-            foreach (ConstructorInfo item in s1)
-            {
-                Console.WriteLine(item);
-            }
+            //var s1 = director.GetType().GetConstructors();
+            //foreach (ConstructorInfo item in s1)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-            var s2 = director.GetType().GUID;
-            Console.WriteLine(s2);
+            //var s2 = director.GetType().GUID;
+            //Console.WriteLine(s2);
             //foreach (ConstructorInfo item in s1)
             //{
             //    Console.WriteLine(item);
@@ -238,6 +312,8 @@ namespace PV221_CSharp
             //st.AddMark(course: Course.Design, mark: 12);
             //st.AddMark(course: Course.Programm, mark: 8);
             //st.AddMark(course: Course.Admin, mark: 10);
+
+            //Print(st, 2);
 
             //st.Info();
 
