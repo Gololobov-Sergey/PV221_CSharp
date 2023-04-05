@@ -76,9 +76,28 @@ namespace PV221_CSharp
             ///////////////////////////
 
 
-            MyArray a = new MyArray(10);
-            a.SetRandom(20, 50);
-            Console.WriteLine(a);
+            try
+            {
+                throw new NotImplementedException("kjeflwjeflwjef");
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine( e.Message);
+                Console.WriteLine( e.StackTrace);
+                Console.WriteLine( e.Source);
+                Console.WriteLine( e.HResult);
+                Console.WriteLine( e.TargetSite);
+            }
+
+
+
+
+
+
+            //MyArray a = new MyArray(10);
+            //a.SetRandom(20, 50);
+            //Console.WriteLine(a);
             
 
 
