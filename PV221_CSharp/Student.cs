@@ -29,6 +29,9 @@ namespace PV221_CSharp
 
         public StudentCard StudentCard { get; set; }
 
+
+        public static IComparer FromBirthDay { get { return new DateComparer(); } }
+
         public int CompareTo(object obj)
         {
             return LastName.CompareTo((obj as Student).LastName);

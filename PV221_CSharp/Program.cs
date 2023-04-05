@@ -82,7 +82,7 @@ namespace PV221_CSharp
             }
             Console.WriteLine( );
 
-            pv221.Sort(new DateComparer());
+            pv221.Sort(Student.FromBirthDay);
 
             foreach (Student item in pv221)
             {
