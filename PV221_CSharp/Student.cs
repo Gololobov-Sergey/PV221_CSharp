@@ -7,11 +7,29 @@ using System.Threading.Tasks;
 
 namespace PV221_CSharp
 {
-     class StudentCard
+     class StudentCard : IComparable, ICloneable
     {
         public int Number { get; set; }
 
         public string Series { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        public int CompareTo(object obj)
+        {
+            StudentCard sc = obj as StudentCard;
+            if (Series == sc.Series)
+            {
+                return Number.CompareTo(sc.Number);
+            }
+            else
+            {
+                return Series.CompareTo(sc.Series);
+            }
+        }
 
         public override string ToString()
         {
@@ -20,7 +38,7 @@ namespace PV221_CSharp
     }
 
 
-    internal class Student : IComparable
+    internal class Student : IComparable, ICloneable
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -32,6 +50,8 @@ namespace PV221_CSharp
 
         public static IComparer FromBirthDay { get { return new DateComparer(); } }
 
+        public static IComparer FromStudentCard { get { return new StudentCardComparer(); } }
+
         public int CompareTo(object obj)
         {
             return LastName.CompareTo((obj as Student).LastName);
@@ -40,6 +60,13 @@ namespace PV221_CSharp
         public override string ToString()
         {
             return $"{LastName.PadRight(15)} {FirstName.PadRight(10)} {BirthDay.ToShortDateString()} {StudentCard}";
+        }
+
+        public object Clone()
+        {
+            Student st = this.MemberwiseClone() as Student;
+            st.StudentCard = this.StudentCard.Clone() as StudentCard;
+            return st;
         }
     }
 
@@ -88,7 +115,7 @@ namespace PV221_CSharp
                 BirthDay = new DateTime(2000, 12, 14),
                 StudentCard = new StudentCard()
                 {
-                    Series = "AC",
+                    Series = "AA",
                     Number = 123451
                 }
             }
@@ -118,6 +145,18 @@ namespace PV221_CSharp
             if(x is Student && y is Student)
             {
                 return DateTime.Compare((x as Student).BirthDay, (y as Student).BirthDay);  
+            }
+            throw new NotImplementedException();
+        }
+    }
+
+    class StudentCardComparer : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            if (x is Student && y is Student)
+            {
+                return (x as Student).StudentCard.CompareTo((y as Student).StudentCard);
             }
             throw new NotImplementedException();
         }

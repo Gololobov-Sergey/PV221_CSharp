@@ -73,7 +73,26 @@ namespace PV221_CSharp
             //                       //
             ///////////////////////////
 
+            Student st1 = new Student
+            {
+                FirstName = "",
+                LastName = "",
+                StudentCard = new StudentCard 
+                { 
+                    Series = "AA", 
+                    Number = 99 
+                } 
+            };
 
+            Student st2 = (Student)st1.Clone();
+
+            Console.WriteLine( st1);
+            Console.WriteLine( st2);
+
+            st2.StudentCard.Series = "FF";
+
+            Console.WriteLine(st1);
+            Console.WriteLine(st2);
 
             Group pv221 = new Group();
             foreach (Student item in pv221)
@@ -82,7 +101,8 @@ namespace PV221_CSharp
             }
             Console.WriteLine( );
 
-            pv221.Sort(Student.FromBirthDay);
+            //pv221.Sort(Student.FromBirthDay);
+            pv221.Sort(Student.FromStudentCard);
 
             foreach (Student item in pv221)
             {
