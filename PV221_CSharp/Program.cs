@@ -67,47 +67,88 @@ namespace PV221_CSharp
             Console.Title = "PV211";
             Console.Clear();
 
+
+
+            ///////////////////////////
+            //                       //  
+            /////// 05.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+            MyArray a = new MyArray(10);
+            a.SetRandom(20, 50);
+            Console.WriteLine(a);
+            
+
+
+
+
+            //int[] arr = { 1, 3, 6, 9, 8, 5, 3, 34, 56, 7, 90, 43 };
+            //var aaa = arr.Where(a => a > 10);
+            //Console.WriteLine(arr.Max());
+            //foreach (var item in aaa)
+            //{
+            //    Console.WriteLine(  item);
+            //}
+
+
+
+
+
+
             ///////////////////////////
             //                       //  
             /////// 04.04.2023  ///////
             //                       //
             ///////////////////////////
 
-            Student st1 = new Student
-            {
-                FirstName = "",
-                LastName = "",
-                StudentCard = new StudentCard 
-                { 
-                    Series = "AA", 
-                    Number = 99 
-                } 
-            };
 
-            Student st2 = (Student)st1.Clone();
 
-            Console.WriteLine( st1);
-            Console.WriteLine( st2);
+            //int[] arr = { 1, 3, 6, 9, 8, 5, 3, 34, 56, 7, 90, 43 };
+            //var aaa = arr.Where(a => a > 10);
+            //Console.WriteLine(arr.Max());
+            //foreach (var item in aaa)
+            //{
+            //    Console.WriteLine(  item);
+            //}
 
-            st2.StudentCard.Series = "FF";
 
-            Console.WriteLine(st1);
-            Console.WriteLine(st2);
+            //Student st1 = new Student
+            //{
+            //    FirstName = "",
+            //    LastName = "",
+            //    StudentCard = new StudentCard 
+            //    { 
+            //        Series = "AA", 
+            //        Number = 99 
+            //    } 
+            //};
 
-            Group pv221 = new Group();
-            foreach (Student item in pv221)
-            {
-                Console.WriteLine(item);
-            }
-            Console.WriteLine( );
+            //Student st2 = (Student)st1.Clone();
 
-            //pv221.Sort(Student.FromBirthDay);
-            pv221.Sort(Student.FromStudentCard);
+            //Console.WriteLine( st1);
+            //Console.WriteLine( st2);
 
-            foreach (Student item in pv221)
-            {
-                Console.WriteLine(item);
-            }
+            //st2.StudentCard.Series = "FF";
+
+            //Console.WriteLine(st1);
+            //Console.WriteLine(st2);
+
+            //Group pv221 = new Group();
+            //foreach (Student item in pv221)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //Console.WriteLine( );
+
+            ////pv221.Sort(Student.FromBirthDay);
+            //pv221.Sort(Student.FromStudentCard);
+
+            //foreach (Student item in pv221)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
 
             //Inter inter = new Inter();
