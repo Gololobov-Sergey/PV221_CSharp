@@ -30,4 +30,20 @@ namespace PV221_CSharp
         }
     }
 
+
+
+    [Serializable]
+    public class MyException : Exception
+    {
+        public MyException() 
+        {
+            Data.Add("data", DateTime.Now);
+        }
+        public MyException(string message) : base(message) { }
+        public MyException(string message, Exception inner) : base(message, inner) { }
+        protected MyException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
 }

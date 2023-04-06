@@ -59,6 +59,22 @@ namespace PV221_CSharp
         }
 
 
+        static int Div(int a, int b)
+        {
+            int res = 0;
+            try
+            {
+                if (b == 0)
+                    throw new MyException();
+                res = a / b;
+            }
+            catch (DivideByZeroException e)
+            {
+                throw new Exception("Not result", e);
+            }
+            return res;
+        }
+
         static void Main(string[] args)
         {
 
@@ -66,6 +82,111 @@ namespace PV221_CSharp
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Title = "PV211";
             Console.Clear();
+            ///////////////////////////
+            //                       //  
+            /////// 06.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+            string s = Console.ReadLine();
+
+            int num = 0;
+            if (s.All(c => c == '0' || c == '1'))
+            {
+                for (int i = 0; i < s.Length; i++)
+                {
+                    num += (s[s.Length - i - 1] - 48) * (int)Math.Pow(2, i);
+                }
+            }
+            Console.WriteLine(num);
+
+            //GarbageGenerator gg = new GarbageGenerator();
+            //try
+            //{
+            //    gg.CreateGarbage();
+            //}
+            //finally
+            //{
+            //    gg.Dispose();
+            //}
+
+
+            //using(GarbageGenerator gg1 = new GarbageGenerator())
+            //{
+            //    gg1.CreateGarbage();
+            //}
+
+
+
+            //Console.WriteLine("Max Gen: " + GC.MaxGeneration);
+
+            //GarbageGenerator gg = new GarbageGenerator();
+
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+
+            //gg.CreateGarbage();
+
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+
+            //GC.Collect(0);
+
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+
+            //GC.Collect();
+
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+
+            //GC.Collect();
+
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+
+            //byte b = 100;
+
+            //try
+            //{
+
+            //    b = (byte)(b + 200);
+
+            //    Console.WriteLine(b);
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
+
+
+
+
+
+            //int n1, n2, res;
+
+            //try
+            //{
+            //    n1 = Convert.ToInt32(Console.ReadLine());
+            //    n2 = Convert.ToInt32(Console.ReadLine());
+            //    res = Div(n1, n2);
+            //    Console.WriteLine(res);
+            //}
+            //catch (Exception e) /*when (e.InnerException != null)*/
+            //{
+            //    Console.WriteLine(e.Message);
+            //    Console.WriteLine(e.StackTrace);
+            //    Console.WriteLine(e.Source);
+            //    Console.WriteLine(e.HResult);
+            //    Console.WriteLine(e.TargetSite);
+            //    foreach (var item in e.Data.Keys)
+            //    {
+            //        Console.WriteLine(item + ": " + e.Data[item]);
+            //    }
+            //    //Console.WriteLine(e.InnerException.Message);
+            //}
+
 
 
 
@@ -76,19 +197,24 @@ namespace PV221_CSharp
             ///////////////////////////
 
 
-            try
-            {
-                throw new NotImplementedException("kjeflwjeflwjef");
-            }
-            catch (Exception e)
-            {
+            //try
+            //{
+            //    throw new NotImplementedException();
+            //    int c = 5;
+            //}
+            //catch (Exception e)
+            //{
 
-                Console.WriteLine( e.Message);
-                Console.WriteLine( e.StackTrace);
-                Console.WriteLine( e.Source);
-                Console.WriteLine( e.HResult);
-                Console.WriteLine( e.TargetSite);
-            }
+            //    Console.WriteLine( e.Message);
+            //    Console.WriteLine( e.StackTrace);
+            //    Console.WriteLine( e.Source);
+            //    Console.WriteLine( e.HResult);
+            //    Console.WriteLine( e.TargetSite);
+            //}
+            //finally
+            //{
+
+            //}
 
 
 
@@ -98,7 +224,7 @@ namespace PV221_CSharp
             //MyArray a = new MyArray(10);
             //a.SetRandom(20, 50);
             //Console.WriteLine(a);
-            
+
 
 
 
