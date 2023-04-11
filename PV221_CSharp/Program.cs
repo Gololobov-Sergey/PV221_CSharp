@@ -76,6 +76,28 @@ namespace PV221_CSharp
             return res;
         }
 
+
+
+        static void PrintStudents(Hashtable group)
+        {
+            foreach (Student item in group.Keys)
+            {
+                Console.WriteLine(item + ", Marks: " + string.Join(",", (group[item] as ArrayList).ToArray()));
+            }
+        }
+
+
+        static void AddMark(Hashtable table, string LastName, string FirstName, int mark)
+        {
+            foreach (Student item in table.Keys)
+            {
+                if(item.FirstName == FirstName && item.LastName == LastName)
+                {
+                    (table[item] as ArrayList).Add(mark);
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
 
@@ -91,74 +113,102 @@ namespace PV221_CSharp
             ///////////////////////////
 
 
+            //using (new OperationTimer("ArrayList"))
+            //{
+            //    ArrayList arrayList = new ArrayList();
+            //    for (int i = 0; i < 10000000; i++)
+            //    {
+            //        arrayList.Add(i);
+            //        int val = (int)arrayList[i];
+            //    }
+            //    arrayList = null;
+            //}
 
-            Hashtable group = new Hashtable
-            {
-                {
-                    new Student()
-                    {
-                        LastName = "Osipov",
-                        FirstName = "Oleg",
-                        BirthDay = new DateTime(2000, 12, 15),
-                        StudentCard = new StudentCard()
-                        {
-                            Series = "AB",
-                            Number = 123456
-                        }
-                    },
-                    new ArrayList{10, 12, 11}
-                },
-                {
-                    new Student()
-                    {
-                        LastName = "Petrova",
-                        FirstName = "Maria",
-                        BirthDay = new DateTime(2002, 04, 20),
-                        StudentCard = new StudentCard()
-                        {
-                            Series = "AB",
-                            Number = 129956
-                        }
-                    },
-                    new ArrayList{9, 10, 11}
-                },
-                {
-                    new Student()
-                    {
-                        LastName = "Fedorov",
-                        FirstName = "Petro",
-                        BirthDay = new DateTime(1999, 01, 10),
-                        StudentCard = new StudentCard()
-                        {
-                            Series = "AC",
-                            Number = 123456
-                        }
-                    },
-                    new ArrayList{12, 12, 11}
-                },
-                {
-                    new Student()
-                    {
-                        LastName = "Abramova",
-                        FirstName = "Olga",
-                        BirthDay = new DateTime(2000, 12, 14),
-                        StudentCard = new StudentCard()
-                        {
-                            Series = "AA",
-                            Number = 123451
-                        }
-                    },
-                    new ArrayList{6, 8, 7}
-                }
-            };
 
-            PrintStudents(group);
+            //using (new OperationTimer("List<int>"))
+            //{
+            //    List<int> list = new List<int>();
+                
+            //    for (int i = 0; i < 10000000; i++)
+            //    {
+            //        list.Add(i);
+            //        int val = list[i];
+            //    }
+            //    list = null;
+            //}
 
-            AddMark("Abramova", "Olga", 10);
 
-            AddMark("Abramova", "Svitlana", 10);
 
-            PrintStudents(group);
+
+            //Hashtable group = new Hashtable
+            //{
+            //    {
+            //        new Student()
+            //        {
+            //            LastName = "Osipov",
+            //            FirstName = "Oleg",
+            //            BirthDay = new DateTime(2000, 12, 15),
+            //            StudentCard = new StudentCard()
+            //            {
+            //                Series = "AB",
+            //                Number = 123456
+            //            }
+            //        },
+            //        new ArrayList{10, 12, 11}
+            //    },
+            //    {
+            //        new Student()
+            //        {
+            //            LastName = "Petrova",
+            //            FirstName = "Maria",
+            //            BirthDay = new DateTime(2002, 04, 20),
+            //            StudentCard = new StudentCard()
+            //            {
+            //                Series = "AB",
+            //                Number = 129956
+            //            }
+            //        },
+            //        new ArrayList{9, 10, 11}
+            //    },
+            //    {
+            //        new Student()
+            //        {
+            //            LastName = "Fedorov",
+            //            FirstName = "Petro",
+            //            BirthDay = new DateTime(1999, 01, 10),
+            //            StudentCard = new StudentCard()
+            //            {
+            //                Series = "AC",
+            //                Number = 123456
+            //            }
+            //        },
+            //        new ArrayList{12, 12, 11}
+            //    },
+            //    {
+            //        new Student()
+            //        {
+            //            LastName = "Abramova",
+            //            FirstName = "Olga",
+            //            BirthDay = new DateTime(2000, 12, 14),
+            //            StudentCard = new StudentCard()
+            //            {
+            //                Series = "AA",
+            //                Number = 123451
+            //            }
+            //        },
+            //        new ArrayList{6, 8, 7}
+            //    }
+            //};
+
+            //PrintStudents(group);
+
+            //AddMark(group, "Abramova", "Olga", 10);
+
+            //AddMark(group, "Abramova", "Svitlana", 10);
+
+            //Console.WriteLine();
+
+            //PrintStudents(group);
 
             //SortedList sortedList = new();
 

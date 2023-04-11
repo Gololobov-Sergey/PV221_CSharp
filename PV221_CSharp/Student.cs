@@ -69,10 +69,10 @@ namespace PV221_CSharp
             return st;
         }
 
-        //public override int GetHashCode()
-        //{
-        //    return base.GetHashCode();
-        //}
+        public override int GetHashCode()
+        {
+            return $"{LastName}".GetHashCode();
+        }
 
     }
 
