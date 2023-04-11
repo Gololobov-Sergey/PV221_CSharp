@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -82,6 +83,141 @@ namespace PV221_CSharp
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Title = "PV211";
             Console.Clear();
+
+            ///////////////////////////
+            //                       //  
+            /////// 11.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+
+            Hashtable group = new Hashtable
+            {
+                {
+                    new Student()
+                    {
+                        LastName = "Osipov",
+                        FirstName = "Oleg",
+                        BirthDay = new DateTime(2000, 12, 15),
+                        StudentCard = new StudentCard()
+                        {
+                            Series = "AB",
+                            Number = 123456
+                        }
+                    },
+                    new ArrayList{10, 12, 11}
+                },
+                {
+                    new Student()
+                    {
+                        LastName = "Petrova",
+                        FirstName = "Maria",
+                        BirthDay = new DateTime(2002, 04, 20),
+                        StudentCard = new StudentCard()
+                        {
+                            Series = "AB",
+                            Number = 129956
+                        }
+                    },
+                    new ArrayList{9, 10, 11}
+                },
+                {
+                    new Student()
+                    {
+                        LastName = "Fedorov",
+                        FirstName = "Petro",
+                        BirthDay = new DateTime(1999, 01, 10),
+                        StudentCard = new StudentCard()
+                        {
+                            Series = "AC",
+                            Number = 123456
+                        }
+                    },
+                    new ArrayList{12, 12, 11}
+                },
+                {
+                    new Student()
+                    {
+                        LastName = "Abramova",
+                        FirstName = "Olga",
+                        BirthDay = new DateTime(2000, 12, 14),
+                        StudentCard = new StudentCard()
+                        {
+                            Series = "AA",
+                            Number = 123451
+                        }
+                    },
+                    new ArrayList{6, 8, 7}
+                }
+            };
+
+            PrintStudents(group);
+
+            AddMark("Abramova", "Olga", 10);
+
+            AddMark("Abramova", "Svitlana", 10);
+
+            PrintStudents(group);
+
+            //SortedList sortedList = new();
+
+            //sortedList.Add(10, "one");
+            //sortedList.Add(2, "two");
+            //sortedList.Add(1, new Student());
+            //foreach (var item in sortedList.Keys)
+            //{
+            //    Console.WriteLine($"Key: {item}, Value: {sortedList[item]}");
+            //}
+
+
+
+            //Hashtable hashtable = new Hashtable();
+            //hashtable.Add(1, "one");
+            //hashtable.Add("two", 2);
+            //hashtable.Add(new Student(), DateTime.Now);
+
+            //foreach (var item in hashtable.Keys)
+            //{
+            //    Console.WriteLine($"Key: {item}, Value: {hashtable[item]}");
+            //}
+
+
+
+
+            //Queue queue = new Queue(); 
+
+
+
+
+            //Stack stack = new();
+            //stack.Push(100);
+            //stack.Push("sfgh");
+            //stack.Push(new Student());
+            //foreach (var item in stack)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+
+            //ArrayList arrayList = new ArrayList(10);
+            //arrayList.Add(100);
+            //arrayList.Add("dsfsgh");
+            ////arrayList.Add(new Student());
+            //arrayList.AddRange(new object[] { "sdfg", 234, DateTime.Now });
+            //Console.WriteLine(arrayList.Capacity);
+
+            //foreach (var item in arrayList)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //arrayList.TrimToSize();
+            //Console.WriteLine(arrayList.Capacity);
+
+            //Console.WriteLine(arrayList.LastIndexOf("sdfg"));
+
+
             ///////////////////////////
             //                       //  
             /////// 06.04.2023  ///////
@@ -89,17 +225,17 @@ namespace PV221_CSharp
             ///////////////////////////
 
 
-            string s = Console.ReadLine();
+            //string s = Console.ReadLine();
 
-            int num = 0;
-            if (s.All(c => c == '0' || c == '1'))
-            {
-                for (int i = 0; i < s.Length; i++)
-                {
-                    num += (s[s.Length - i - 1] - 48) * (int)Math.Pow(2, i);
-                }
-            }
-            Console.WriteLine(num);
+            //int num = 0;
+            //if (s.All(c => c == '0' || c == '1'))
+            //{
+            //    for (int i = 0; i < s.Length; i++)
+            //    {
+            //        num += (s[s.Length - i - 1] - 48) * (int)Math.Pow(2, i);
+            //    }
+            //}
+            //Console.WriteLine(num);
 
             //GarbageGenerator gg = new GarbageGenerator();
             //try

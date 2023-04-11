@@ -59,7 +59,7 @@ namespace PV221_CSharp
 
         public override string ToString()
         {
-            return $"{LastName.PadRight(15)} {FirstName.PadRight(10)} {BirthDay.ToShortDateString()} {StudentCard}";
+            return $"{LastName?.PadRight(15)} {FirstName?.PadRight(10)} {BirthDay.ToShortDateString()} {StudentCard}";
         }
 
         public object Clone()
@@ -68,6 +68,12 @@ namespace PV221_CSharp
             st.StudentCard = this.StudentCard.Clone() as StudentCard;
             return st;
         }
+
+        //public override int GetHashCode()
+        //{
+        //    return base.GetHashCode();
+        //}
+
     }
 
 
