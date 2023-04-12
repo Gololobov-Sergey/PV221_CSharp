@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace PV221_CSharp
 {
-    internal abstract class Human
+    public abstract class Human
     {
         protected string FirstName;
         protected string LastName;
@@ -30,7 +30,8 @@ namespace PV221_CSharp
         }
     }
 
-    /*sealed*/ abstract class Employee : Human
+    /*sealed*/
+    public abstract class Employee : Human
     {
         new int iddddd;
         int Salary;

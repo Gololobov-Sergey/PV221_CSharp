@@ -98,6 +98,21 @@ namespace PV221_CSharp
             }
         }
 
+
+        static T MaxValue<T>(T[] arr) where T : IComparable<T>
+        {
+            T max = arr[0];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i].CompareTo(max) > 0)
+                {
+                    max = arr[i];
+                }
+            }
+            return max;
+        }
+
+
         static void Main(string[] args)
         {
 
@@ -105,6 +120,50 @@ namespace PV221_CSharp
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Title = "PV211";
             Console.Clear();
+
+            ///////////////////////////
+            //                       //  
+            /////// 12.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+            //int[] arr = { 2, 56, 8, 54, 3, 5, 7, 8, 43 };
+            //Console.WriteLine(MaxValue(arr));
+
+            // int(*name)(int, int) = func;
+            // name();
+
+            // vector<type(*name)(param)> v;
+
+
+            //A<int>.B aa = new();
+
+            //C<int>.D<string> ddd = new();
+
+
+            //Point2D<Director> p = new();
+            //Console.WriteLine(typeof(Point2D<int>));
+
+
+
+
+            //Dictionary<string, int> dic = new()
+            //{
+            //    { "one", 1 },
+            //    { "three", 3 },
+            //    { "two", 2 }
+            //};
+
+            //Console.WriteLine(dic.TryAdd("oniuyte", 1));
+
+            //foreach (var item in dic.Keys)
+            //{
+            //    Console.WriteLine(item + " " + dic[item]);
+            //}
+
+
+
 
             ///////////////////////////
             //                       //  
@@ -128,7 +187,7 @@ namespace PV221_CSharp
             //using (new OperationTimer("List<int>"))
             //{
             //    List<int> list = new List<int>();
-                
+
             //    for (int i = 0; i < 10000000; i++)
             //    {
             //        list.Add(i);
@@ -471,10 +530,10 @@ namespace PV221_CSharp
             //{
             //    Console.WriteLine(item);
             //}
-            //Console.WriteLine( );
+            //Console.WriteLine();
 
-            ////pv221.Sort(Student.FromBirthDay);
-            //pv221.Sort(Student.FromStudentCard);
+            //pv221.Sort(Student.FromBirthDay);
+            ////pv221.Sort(Student.FromStudentCard);
 
             //foreach (Student item in pv221)
             //{

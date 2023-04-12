@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PV221_CSharp
 {
-     class StudentCard : IComparable, ICloneable
+    class StudentCard : IComparable<StudentCard>, ICloneable
     {
         public int Number { get; set; }
 
@@ -18,16 +18,15 @@ namespace PV221_CSharp
             return this.MemberwiseClone();
         }
 
-        public int CompareTo(object obj)
+        public int CompareTo(StudentCard obj)
         {
-            StudentCard sc = obj as StudentCard;
-            if (Series == sc.Series)
+            if (Series == obj.Series)
             {
-                return Number.CompareTo(sc.Number);
+                return Number.CompareTo(obj.Number);
             }
             else
             {
-                return Series.CompareTo(sc.Series);
+                return Series.CompareTo(obj.Series);
             }
         }
 
@@ -38,7 +37,7 @@ namespace PV221_CSharp
     }
 
 
-    internal class Student : IComparable, ICloneable
+    internal class Student : IComparable<Student>, ICloneable
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -47,14 +46,13 @@ namespace PV221_CSharp
 
         public StudentCard StudentCard { get; set; }
 
+        public static IComparer<Student> FromBirthDay { get { return new DateComparer(); } }
 
-        public static IComparer FromBirthDay { get { return new DateComparer(); } }
+        public static IComparer<Student> FromStudentCard { get { return new StudentCardComparer(); } }
 
-        public static IComparer FromStudentCard { get { return new StudentCardComparer(); } }
-
-        public int CompareTo(object obj)
+        public int CompareTo(Student obj)
         {
-            return LastName.CompareTo((obj as Student).LastName);
+            return LastName.CompareTo(obj.LastName);
         }
 
         public override string ToString()
@@ -77,7 +75,7 @@ namespace PV221_CSharp
     }
 
 
-    class Group : IEnumerable
+    class Group /*: IEnumerable<Student>*/
     {
         Student[] students =
         {
@@ -127,8 +125,16 @@ namespace PV221_CSharp
             }
         };
 
+        public IEnumerator<Student> GetEnumerator()
+        {
+            for (int i = 0; i < students.Length; i++)
+            {
+               yield return students[i];
+            }
+        }
 
-        public void Sort(IComparer comparer)
+
+        public void Sort(IComparer<Student> comparer)
         {
             Array.Sort(students, comparer);
         }
@@ -138,33 +144,35 @@ namespace PV221_CSharp
             Array.Sort(students);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return students.GetEnumerator();
-        }
+        //public IEnumerator<Student> GetEnumerator()
+        //{
+        //    return ((IEnumerable<Student>)students).GetEnumerator();
+        //}
+
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return students.GetEnumerator();
+        //}
     }
 
-    class DateComparer : IComparer
+    class DateComparer : IComparer<Student>, IComparer<Point>
     {
-        public int Compare(object x, object y)
+        public int Compare(Student x, Student y)
         {
-            if(x is Student && y is Student)
-            {
-                return DateTime.Compare((x as Student).BirthDay, (y as Student).BirthDay);  
-            }
+            return DateTime.Compare(x.BirthDay, y.BirthDay);
+        }
+
+        public int Compare(Point x, Point y)
+        {
             throw new NotImplementedException();
         }
     }
 
-    class StudentCardComparer : IComparer
+    class StudentCardComparer : IComparer<Student>
     {
-        public int Compare(object x, object y)
+        public int Compare(Student x, Student y)
         {
-            if (x is Student && y is Student)
-            {
-                return (x as Student).StudentCard.CompareTo((y as Student).StudentCard);
-            }
-            throw new NotImplementedException();
+            return x.StudentCard.CompareTo(y.StudentCard);
         }
     }
 
