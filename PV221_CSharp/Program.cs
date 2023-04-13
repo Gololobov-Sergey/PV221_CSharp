@@ -60,7 +60,7 @@ namespace PV221_CSharp
         }
 
 
-        static int Div(int a, int b)
+        public static int Div(int a, int b)
         {
             int res = 0;
             try
@@ -91,7 +91,7 @@ namespace PV221_CSharp
         {
             foreach (Student item in table.Keys)
             {
-                if(item.FirstName == FirstName && item.LastName == LastName)
+                if (item.FirstName == FirstName && item.LastName == LastName)
                 {
                     (table[item] as ArrayList).Add(mark);
                 }
@@ -112,6 +112,42 @@ namespace PV221_CSharp
             return max;
         }
 
+        public static void PrintHello()
+        {
+            Console.WriteLine("Hello");
+        }
+
+        // modifer delegate type nameDelegate (param);
+
+        public delegate void VoidDelegate();
+
+
+        public delegate T T_Delegate1<T>(T a, T b);
+
+        //public delegate void T_Delegate<T1>(T1 a);
+        //public delegate void T_Delegate<T1, T2>(T1 a, T2 b);
+        //public delegate void T_Delegate<T1, T2, T3>(T1 a, T2 b, T3 c);
+        public delegate TResult T_Delegate<T1, TResult>(T1 a);
+
+        public static void PrintFirstLastName(Student student)
+        {
+            Console.WriteLine($"{student.LastName} {student.FirstName}");
+        }
+
+
+        public static string SelectFirstLastName(Student student)
+        {
+            return $"{student.LastName} {student.FirstName}";
+        }
+
+
+        public static bool AllBirthDay1998(Student student)
+        {
+            return student.BirthDay.Year > 1998;
+        }
+
+
+        //modify event NameDelegate NameEvent;
 
         static void Main(string[] args)
         {
@@ -120,6 +156,153 @@ namespace PV221_CSharp
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Title = "PV211";
             Console.Clear();
+
+            ///////////////////////////
+            //                       //  
+            /////// 13.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+            
+
+
+            //VoidDelegate vd = new VoidDelegate(PrintHello);
+            //vd();
+
+            //Calc calc = new();
+
+            //CalcDelegate calcDelegate = calc.Sum;
+            //calcDelegate += calc.Sub;
+            //calcDelegate += Calc.Mult;
+            //calcDelegate += calc.Div;
+
+            //string expresson = Console.ReadLine();
+            ////2 + 3
+            //string[] strings = expresson.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            //switch (strings[1])
+            //{
+            //    case "+":
+            //        calcDelegate = new CalcDelegate(calc.Sum); break;
+            //    case "-":
+            //        calcDelegate = new CalcDelegate(calc.Sub); break;
+            //    case "*":
+            //        calcDelegate = Calc.Mult; break;
+            //    case "/":
+            //        calcDelegate = calc.Div; break;
+            //    default:
+            //        break;
+            //}
+
+            //foreach (CalcDelegate item in calcDelegate.GetInvocationList())
+            //{
+            //    double result = item(double.Parse(strings[0]), double.Parse(strings[2]));
+
+            //    Console.WriteLine(result);
+            //}
+
+
+
+            //Action<Hashtable> aaa = PrintStudents;
+            //T_Delegate<int> intDel = Div;
+            //T_Delegate<double> doubleDel;
+
+
+            List<Student> group = new List<Student>
+            {
+                new Student()
+                {
+                    LastName = "Osipov",
+                    FirstName = "Oleg",
+                    BirthDay = new DateTime(2000, 12, 15),
+                    StudentCard = new StudentCard()
+                    {
+                        Series = "AB",
+                        Number = 123456
+                    }
+                },
+
+                new Student()
+                {
+                    LastName = "Petrova",
+                    FirstName = "Maria",
+                    BirthDay = new DateTime(2002, 04, 20),
+                    StudentCard = new StudentCard()
+                    {
+                        Series = "AB",
+                        Number = 129956
+                    }
+                },
+
+                new Student()
+                {
+                    LastName = "Fedorov",
+                    FirstName = "Petro",
+                    BirthDay = new DateTime(1999, 01, 10),
+                    StudentCard = new StudentCard()
+                    {
+                        Series = "AC",
+                        Number = 123456
+                    }
+                },
+
+                new Student()
+                {
+                    LastName = "Abramova",
+                    FirstName = "Olga",
+                    BirthDay = new DateTime(2000, 12, 14),
+                    StudentCard = new StudentCard()
+                    {
+                        Series = "AA",
+                        Number = 123451
+                    }
+                }
+            };
+
+
+            Teacher teacher = new();
+            foreach (Student item in group)
+            {
+                teacher.ExamEvent += item.Exam;
+            }
+
+            teacher.Exam(new DateTime(2023, 4, 14));
+
+            teacher.ExamEvent -= group[1].Exam;
+
+            teacher.Exam(new DateTime(2023, 4, 18));
+
+            //group.ForEach(PrintFirstLastName);
+
+            //Console.WriteLine(group.All(s => s.BirthDay.Year > 1998));
+
+
+            //var FullName = group.Select(SelectFirstLastName);
+            //foreach (var item in FullName)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //var gr = group
+            //    .GroupBy(s => s.StudentCard.Series)
+            //    .OrderBy(g => g.Key);
+
+            //foreach (var item in gr)
+            //{
+            //    Console.WriteLine("Series: " + item.Key);
+            //    foreach (var item1 in item)
+            //    {
+            //        Console.WriteLine(item1);
+            //    }
+            //}
+
+            //var list2000 = group.FindAll(s => s.BirthDay.Year == 2000);
+            //list2000.ForEach(s => Console.WriteLine(s));
+
+
+            group.Sort((s1, s2) => s1.BirthDay.CompareTo(s2.BirthDay));
+            group.ForEach(s => Console.WriteLine(s));
+
 
             ///////////////////////////
             //                       //  

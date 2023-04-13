@@ -72,6 +72,11 @@ namespace PV221_CSharp
             return $"{LastName}".GetHashCode();
         }
 
+        public void Exam(DateTime dateExam)
+        {
+            Console.WriteLine($"Для {LastName} {FirstName} екзамен назначено на {dateExam.ToShortDateString()}");
+        }
+
     }
 
 
@@ -173,6 +178,21 @@ namespace PV221_CSharp
         public int Compare(Student x, Student y)
         {
             return x.StudentCard.CompareTo(y.StudentCard);
+        }
+    }
+
+
+    public delegate void ExamDelegate(DateTime dateTime);
+    
+
+    class Teacher
+    {
+        public event ExamDelegate ExamEvent;
+        //public event Action<DateTime> ExamEvent;
+
+        public void Exam(DateTime dateTime)
+        {
+            this.ExamEvent(dateTime);
         }
     }
 
