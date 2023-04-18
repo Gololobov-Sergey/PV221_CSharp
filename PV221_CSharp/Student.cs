@@ -72,9 +72,14 @@ namespace PV221_CSharp
             return $"{LastName}".GetHashCode();
         }
 
-        public void Exam(DateTime dateExam)
+        //public void Exam(object sender, ExamEventArgs e)
+        //{
+        //    Console.WriteLine($"Для {LastName} {FirstName} екзамен по {e.Subject} назначено на {e.DateExam.ToShortDateString()}, який пройде в аудиторії {e.Room}");
+        //}
+
+        public void Exam(DateTime d)
         {
-            Console.WriteLine($"Для {LastName} {FirstName} екзамен назначено на {dateExam.ToShortDateString()}");
+            Console.WriteLine($"Для {LastName} {FirstName} екзамен на {d.ToShortDateString()}");
         }
 
     }
@@ -185,14 +190,47 @@ namespace PV221_CSharp
     public delegate void ExamDelegate(DateTime dateTime);
     
 
+    class ExamEventArgs : EventArgs
+    {
+        public DateTime DateExam { get; set; }
+        public string Subject { get; set; }
+        public string Room { get; set; }
+    }
+
+
     class Teacher
     {
-        public event ExamDelegate ExamEvent;
-        //public event Action<DateTime> ExamEvent;
+        ////public event ExamDelegate ExamEvent1;
+        ////public event Action<DateTime, ..., ...> ExamEvent;
+        //public EventHandler<ExamEventArgs> ExamEvent;
 
-        public void Exam(DateTime dateTime)
+        //public void Exam(ExamEventArgs e)
+        //{
+        //    this.ExamEvent(this, e);
+        //}
+
+        SortedList<string, ExamDelegate> list = new();
+
+        public event ExamDelegate ExamEvent
         {
-            this.ExamEvent(dateTime);
+            add
+            {
+                list.Add((value.Target as Student).LastName, value);
+            }
+            remove 
+            { 
+                list.Remove((value.Target as Student).LastName);
+            }
+        }
+        //public event Action<DateTime, ..., ...> ExamEvent;
+        //public EventHandler<ExamEventArgs> ExamEvent;
+
+        public void Exam(DateTime d)
+        {
+            foreach (var item in list)
+            {
+                item.Value(d);
+            }
         }
     }
 

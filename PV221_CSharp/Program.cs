@@ -266,11 +266,25 @@ namespace PV221_CSharp
                 teacher.ExamEvent += item.Exam;
             }
 
-            teacher.Exam(new DateTime(2023, 4, 14));
+            teacher.Exam(new DateTime(2023, 4, 18));
+            //teacher.Exam(new ExamEventArgs
+            //{
+            //    DateExam = new DateTime(2023, 4, 14),
+            //    Subject = "C#",
+            //    Room = "305A"
+            //});
 
             teacher.ExamEvent -= group[1].Exam;
 
-            teacher.Exam(new DateTime(2023, 4, 18));
+            teacher.Exam(new DateTime(2023, 4, 25));
+            //teacher.Exam(new ExamEventArgs
+            //{
+            //    DateExam = new DateTime(2023, 4, 20),
+            //    Subject = "C#",
+            //    Room = "307A"
+            //});
+
+            //teacher.ExamEvent1 += Teacher_ExamEvent1;
 
             //group.ForEach(PrintFirstLastName);
 
@@ -1174,6 +1188,11 @@ namespace PV221_CSharp
 
             //StringBuilder sb = new StringBuilder();
 
+        }
+
+        private static void Teacher_ExamEvent1(DateTime dateTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }
