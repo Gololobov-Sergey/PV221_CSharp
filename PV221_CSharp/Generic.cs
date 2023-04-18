@@ -61,4 +61,27 @@ namespace PV221_CSharp
 
     }
 
+
+
+    static class ExtensiomMethod
+    {
+
+        public static string Mult(this string data, int n)
+        {
+            string res = "";
+            for (int i = 0; i < n; i++)
+            {
+                res += data;
+            }
+            return res;
+        }
+
+
+        public static string PadCenter(this string data, int totalWidth)
+        {
+            int lenSpace = (totalWidth - data.Length <= 0) ? 0 : totalWidth - data.Length;
+            return " ".Mult(lenSpace /2) + data + " ".Mult(lenSpace - lenSpace/2);
+        }
+    }
+
 }

@@ -149,10 +149,8 @@ namespace PV221_CSharp
             Array.Sort(students, comparer);
         }
 
-        public void Sort()
-        {
-            Array.Sort(students);
-        }
+        public void Sort() => Array.Sort(students);
+
 
         //public IEnumerator<Student> GetEnumerator()
         //{
@@ -232,6 +230,7 @@ namespace PV221_CSharp
                 item.Value(d);
             }
         }
-    }
 
+    }
+     
 }

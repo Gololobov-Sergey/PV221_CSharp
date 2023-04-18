@@ -121,6 +121,7 @@ namespace PV221_CSharp
 
         public delegate void VoidDelegate();
 
+        public delegate int IntDelegate(int a, int b);
 
         public delegate T T_Delegate1<T>(T a, T b);
 
@@ -159,11 +160,34 @@ namespace PV221_CSharp
 
             ///////////////////////////
             //                       //  
+            /////// 18.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+            //VoidDelegate vd = new VoidDelegate(PrintHello);
+            //vd();
+            //vd += delegate () { Console.WriteLine("Godbye"); };
+            //vd += () => Console.WriteLine("Godbye");
+            //vd();
+
+            //IntDelegate id = null;
+
+            //id += delegate (int c, int d) { return c + d; };
+
+            //id += (c, d) => c - d;
+
+            //Console.WriteLine(id(3,5));
+
+            // (param) => { code };
+
+
+            ///////////////////////////
+            //                       //  
             /////// 13.04.2023  ///////
             //                       //
             ///////////////////////////
 
-            
+
 
 
             //VoidDelegate vd = new VoidDelegate(PrintHello);
@@ -259,14 +283,32 @@ namespace PV221_CSharp
                 }
             };
 
+            group.ForEach(s => Console.WriteLine(s));
+            Console.WriteLine();
 
-            Teacher teacher = new();
-            foreach (Student item in group)
-            {
-                teacher.ExamEvent += item.Exam;
-            }
+            group
+                .FindAll(s => s.BirthDay.Month >=3 &&  s.BirthDay.Month <= 5)
+                .ForEach(s => Console.WriteLine(s));
+            Console.WriteLine();
 
-            teacher.Exam(new DateTime(2023, 4, 18));
+
+            Console.WriteLine(group.Find(s => s.BirthDay == group.Max(s => s.BirthDay)));
+
+            group.Sort(Student.FromBirthDay);
+            Console.WriteLine(group.Last());
+
+            string st = "Hello";
+            Console.WriteLine(st.PadLeft(10));
+            Console.WriteLine(st.PadRight(10));
+            Console.WriteLine(st.PadCenter(10));
+
+            //Teacher teacher = new();
+            //foreach (Student item in group)
+            //{
+            //    teacher.ExamEvent += item.Exam;
+            //}
+
+            //teacher.Exam(new DateTime(2023, 4, 18));
             //teacher.Exam(new ExamEventArgs
             //{
             //    DateExam = new DateTime(2023, 4, 14),
@@ -274,9 +316,10 @@ namespace PV221_CSharp
             //    Room = "305A"
             //});
 
-            teacher.ExamEvent -= group[1].Exam;
+            //teacher.ExamEvent -= group[1].Exam;
 
-            teacher.Exam(new DateTime(2023, 4, 25));
+            //teacher.Exam(new DateTime(2023, 4, 25)); 
+
             //teacher.Exam(new ExamEventArgs
             //{
             //    DateExam = new DateTime(2023, 4, 20),
@@ -314,8 +357,8 @@ namespace PV221_CSharp
             //list2000.ForEach(s => Console.WriteLine(s));
 
 
-            group.Sort((s1, s2) => s1.BirthDay.CompareTo(s2.BirthDay));
-            group.ForEach(s => Console.WriteLine(s));
+            //group.Sort((s1, s2) => s1.BirthDay.CompareTo(s2.BirthDay));
+            //group.ForEach(s => Console.WriteLine(s));
 
 
             ///////////////////////////

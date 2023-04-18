@@ -23,10 +23,8 @@ namespace PV221_CSharp
 
             public int Year { get; set; }
 
-            public void Print()
-            {
-                Console.WriteLine($"{Vendor} {Model} {Year}");
-            }
+            public void Print() => Console.WriteLine($"{Vendor} {Model} {Year}");
+
         }
     }
 
