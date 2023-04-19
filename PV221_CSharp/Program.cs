@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -153,10 +154,137 @@ namespace PV221_CSharp
         static void Main(string[] args)
         {
 
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.InputEncoding = Encoding.Unicode;
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Title = "PV211";
             Console.Clear();
+
+            ///////////////////////////
+            //                       //  
+            /////// 19.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+            //using (FileStream fs = new("file1.bin", FileMode.Create, FileAccess.Write, FileShare.None))
+            //{
+            //    string str = Console.ReadLine();
+            //    byte[] bytes = Encoding.Default.GetBytes(str);
+            //    fs.Write(bytes, 0, bytes.Length);
+            //}
+
+            //using (FileStream fs = new("file1.bin", FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    byte[] bytes = new byte[fs.Length];
+            //    fs.Read(bytes, 0, bytes.Length);
+            //    string str = Encoding.Default.GetString(bytes);
+            //    Console.WriteLine(str);
+            //}
+
+
+
+
+            //using (FileStream fs = new("file2.txt", FileMode.CreateNew))
+            //{
+            //    using (StreamWriter sw = new StreamWriter(fs, Encoding.Unicode))
+            //    {
+            //        string str = Console.ReadLine();
+            //        sw.WriteLine(str);
+            //        foreach (var item in str)
+            //        {
+            //            sw.Write(item + ".");
+            //        }
+            //        sw.WriteLine();
+            //    }
+            //}
+
+            //using (FileStream fs = new("file2.txt", FileMode.Open))
+            //{
+            //    using(StreamReader sr = new StreamReader(fs, Encoding.Unicode)) 
+            //    {
+            //        string str = sr.ReadToEnd();
+            //        Console.WriteLine( str);
+            //    }
+            //}
+
+
+            //using (FileStream fs = new("file3.bin", FileMode.CreateNew))
+            //{
+            //    using (BinaryWriter bw = new BinaryWriter(fs, Encoding.Unicode))
+            //    {
+            //        int n = 1234;
+            //        string str = "Вінниця і Миколаїв";
+            //        double pi = 3.141592;
+
+            //        bw.Write(n);
+            //        bw.Write(str);
+            //        bw.Write(pi);
+            //    }
+            //}
+
+            //using (FileStream fs = new("file3.bin", FileMode.Open))
+            //{
+            //    using (BinaryReader br = new BinaryReader(fs, Encoding.Unicode))
+            //    {
+            //        int n = br.ReadInt32();
+            //        string s = br.ReadString();
+            //        double d = br.ReadDouble();                 
+
+            //        Console.WriteLine(n);
+            //        Console.WriteLine(s);
+            //        Console.WriteLine(d);
+            //    }
+            //}
+
+            DirectoryInfo dir = new DirectoryInfo(".");
+            //dir.CreateSubdirectory("Dir1");
+            //Console.WriteLine(dir.FullName);
+            //Console.WriteLine(dir.Name);
+            //Console.WriteLine(dir.Parent);
+            //Console.WriteLine(dir.Attributes);
+            //Console.WriteLine(dir.CreationTime);
+            //Console.WriteLine(dir.Exists);
+
+            //List<string> list = new List<string>(); 
+            //var dirs = dir.GetDirectories();
+            //foreach (var item in dirs)
+            //{
+            //    list.Add(item.Name);
+            //}
+
+            //var files = dir.GetFiles();
+            //foreach (var item in files)
+            //{
+            //    list.Add(item.Name);
+            //}
+
+            //ConsoleMenu.SelectVertical(HPosition.Left, VPosition.Top, HorizontalAlignment.Left, list);
+            //ConsoleMenu.SelectVertical(HPosition.Left, VPosition.Top, HorizontalAlignment.Left, "srgerg", "sdfgh", "sdfg");
+
+            //using(StreamWriter sw = File.CreateText("text4.txt"))
+            //{
+            //    sw.WriteLine("kldsfj wloejflwekjf wef");
+            //}
+
+            using (StreamReader sr = File.OpenText("text4.txt"))
+            {
+                Console.WriteLine(sr.ReadToEnd());
+            }
+
+            FileInfo file = new FileInfo("text4.txt");
+            Console.WriteLine(file.FullName);
+            Console.WriteLine(file.Name);
+
+            Console.WriteLine(file.Length);
+            Console.WriteLine(file.CreationTime);
+            Console.WriteLine(file.Attributes & FileAttributes.System);
+            Console.WriteLine(file.Directory.FullName);
+            Console.WriteLine(file.Extension.TrimStart('.'));
+            Console.WriteLine(file.LastAccessTime);
+            Console.WriteLine(file.LastWriteTime);
+
+            Directory.GetLogicalDrives().ToList().ForEach(x => Console.WriteLine(x));
 
             ///////////////////////////
             //                       //  
@@ -232,75 +360,75 @@ namespace PV221_CSharp
             //T_Delegate<double> doubleDel;
 
 
-            List<Student> group = new List<Student>
-            {
-                new Student()
-                {
-                    LastName = "Osipov",
-                    FirstName = "Oleg",
-                    BirthDay = new DateTime(2000, 12, 15),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AB",
-                        Number = 123456
-                    }
-                },
+            //List<Student> group = new List<Student>
+            //{
+            //    new Student()
+            //    {
+            //        LastName = "Osipov",
+            //        FirstName = "Oleg",
+            //        BirthDay = new DateTime(2000, 12, 15),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AB",
+            //            Number = 123456
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Petrova",
-                    FirstName = "Maria",
-                    BirthDay = new DateTime(2002, 04, 20),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AB",
-                        Number = 129956
-                    }
-                },
+            //    new Student()
+            //    {
+            //        LastName = "Petrova",
+            //        FirstName = "Maria",
+            //        BirthDay = new DateTime(2002, 04, 20),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AB",
+            //            Number = 129956
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Fedorov",
-                    FirstName = "Petro",
-                    BirthDay = new DateTime(1999, 01, 10),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AC",
-                        Number = 123456
-                    }
-                },
+            //    new Student()
+            //    {
+            //        LastName = "Fedorov",
+            //        FirstName = "Petro",
+            //        BirthDay = new DateTime(1999, 01, 10),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AC",
+            //            Number = 123456
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Abramova",
-                    FirstName = "Olga",
-                    BirthDay = new DateTime(2000, 12, 14),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AA",
-                        Number = 123451
-                    }
-                }
-            };
+            //    new Student()
+            //    {
+            //        LastName = "Abramova",
+            //        FirstName = "Olga",
+            //        BirthDay = new DateTime(2000, 12, 14),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AA",
+            //            Number = 123451
+            //        }
+            //    }
+            //};
 
-            group.ForEach(s => Console.WriteLine(s));
-            Console.WriteLine();
+            //group.ForEach(s => Console.WriteLine(s));
+            //Console.WriteLine();
 
-            group
-                .FindAll(s => s.BirthDay.Month >=3 &&  s.BirthDay.Month <= 5)
-                .ForEach(s => Console.WriteLine(s));
-            Console.WriteLine();
+            //group
+            //    .FindAll(s => s.BirthDay.Month >=3 &&  s.BirthDay.Month <= 5)
+            //    .ForEach(s => Console.WriteLine(s));
+            //Console.WriteLine();
 
 
-            Console.WriteLine(group.Find(s => s.BirthDay == group.Max(s => s.BirthDay)));
+            //Console.WriteLine(group.Find(s => s.BirthDay == group.Max(s => s.BirthDay)));
 
-            group.Sort(Student.FromBirthDay);
-            Console.WriteLine(group.Last());
+            //group.Sort(Student.FromBirthDay);
+            //Console.WriteLine(group.Last());
 
-            string st = "Hello";
-            Console.WriteLine(st.PadLeft(10));
-            Console.WriteLine(st.PadRight(10));
-            Console.WriteLine(st.PadCenter(10));
+            //string st = "Hello";
+            //Console.WriteLine(st.PadLeft(10));
+            //Console.WriteLine(st.PadRight(10));
+            //Console.WriteLine(st.PadCenter(10));
 
             //Teacher teacher = new();
             //foreach (Student item in group)
