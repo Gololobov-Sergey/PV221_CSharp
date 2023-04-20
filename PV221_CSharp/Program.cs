@@ -21,6 +21,7 @@ namespace PV221_CSharp
             Up, Down, Left, Right
         }
 
+        
         public static void Func(ref int i, ref int[] arr, out int b)
         {
             Console.WriteLine(i);
