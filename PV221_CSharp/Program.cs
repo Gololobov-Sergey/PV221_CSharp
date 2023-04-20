@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using PV221_CSharp.CarNC;
 
 //using static System.Console;
@@ -167,6 +168,29 @@ namespace PV221_CSharp
             //                       //
             ///////////////////////////
 
+            // .
+            // \w - 
+            // \W
+            // \s
+            // \S
+            // \d
+            // \D
+            // [abc]
+            // +
+
+
+            //string pattern = @"^([A-Z][a-z]*\s?-?){3,}$";
+            //string pattern = @"^(\d{1,3}.){3}\d{1,3}$";
+            //string pattern = @"^(\d{1,2}.){2}\d{4}$";
+            string pattern = @"^\+38\(0(50|66)\)\d{3}-\d{2}-\d{2}$";
+
+            Regex regex = new Regex(pattern); 
+
+            while (true)
+            {
+                string str = Console.ReadLine();
+                Console.WriteLine(regex.IsMatch(str));
+            }
 
             //int[] arr = { 3, 5, 2, 23, 5, 7, 89, 873, 54, 3, 33, 56 };
 
@@ -396,68 +420,68 @@ namespace PV221_CSharp
             //T_Delegate<double> doubleDel;
 
 
-            List<Student> group = new List<Student>
-            {
-                new Student()
-                {
-                    LastName = "Osipov",
-                    FirstName = "Oleg",
-                    BirthDay = new DateTime(2000, 12, 15),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AB",
-                        Number = 123456
-                    }
-                },
+            //List<Student> group = new List<Student>
+            //{
+            //    new Student()
+            //    {
+            //        LastName = "Osipov",
+            //        FirstName = "Oleg",
+            //        BirthDay = new DateTime(2000, 12, 15),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AB",
+            //            Number = 123456
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Petrova",
-                    FirstName = "Maria",
-                    BirthDay = new DateTime(2002, 04, 20),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AB",
-                        Number = 129956
-                    }
-                },
+            //    new Student()
+            //    {
+            //        LastName = "Petrova",
+            //        FirstName = "Maria",
+            //        BirthDay = new DateTime(2002, 04, 20),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AB",
+            //            Number = 129956
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Fedorov",
-                    FirstName = "Petro",
-                    BirthDay = new DateTime(1999, 01, 10),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AC",
-                        Number = 123456
-                    }
-                },
+            //    new Student()
+            //    {
+            //        LastName = "Fedorov",
+            //        FirstName = "Petro",
+            //        BirthDay = new DateTime(1999, 01, 10),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AC",
+            //            Number = 123456
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Abramova",
-                    FirstName = "Olga",
-                    BirthDay = new DateTime(2000, 12, 14),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AA",
-                        Number = 124123
-                    }
-                }
-            };
+            //    new Student()
+            //    {
+            //        LastName = "Abramova",
+            //        FirstName = "Olga",
+            //        BirthDay = new DateTime(2000, 12, 14),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AA",
+            //            Number = 124123
+            //        }
+            //    }
+            //};
 
 
-            var res = from s in @group
-                      where s.BirthDay == (from d in @group select d.BirthDay).Max()
-                      select s; // new { LN = s.LastName, BD = s.BirthDay };
+            //var res = from s in @group
+            //          where s.BirthDay == (from d in @group select d.BirthDay).Max()
+            //          select s; // new { LN = s.LastName, BD = s.BirthDay };
 
-            var res1 = group.Where(s => s.FirstName.First() == 'O');
+            //var res1 = group.Where(s => s.FirstName.First() == 'O');
 
-            foreach (var item in res)
-            {
-                Console.WriteLine(item);
-            }
+            //foreach (var item in res)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
 
 

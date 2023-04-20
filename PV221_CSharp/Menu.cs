@@ -33,6 +33,7 @@ namespace PV221_CSharp
     {
         Center, Top, Bottom
     };
+
     static class ConsoleMenu
     {
         public static int SelectVertical(HPosition hPos, VPosition vPos,
