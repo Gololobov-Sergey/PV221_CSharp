@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PV221_CSharp
 {
-    class StudentCard : IComparable<StudentCard>, ICloneable
+    [Serializable]
+    public class StudentCard : IComparable<StudentCard>, ICloneable
     {
         public int Number { get; set; }
 
@@ -36,12 +38,18 @@ namespace PV221_CSharp
         }
     }
 
-
-    internal class Student : IComparable<Student>, ICloneable
+    [Serializable]
+    [Programmer("Serg", "2023-03-10")]
+    [Programmer("Alex", "2023-04-18")]
+    [Programmer("Maria", "2023-04-25")]
+    public class Student : IComparable<Student>, ICloneable, ISerializable
     {
+        //[NonSerialized]
+        string id = "999999";
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        [AgeValidation(20)]
         public DateTime BirthDay { get; set; }
 
         public StudentCard StudentCard { get; set; }
@@ -77,11 +85,26 @@ namespace PV221_CSharp
         //    Console.WriteLine($"Для {LastName} {FirstName} екзамен по {e.Subject} назначено на {e.DateExam.ToShortDateString()}, який пройде в аудиторії {e.Room}");
         //}
 
+        [Programmer("Serg", "2023-04-10")]
         public void Exam(DateTime d)
         {
             Console.WriteLine($"Для {LastName} {FirstName} екзамен на {d.ToShortDateString()}");
         }
 
+        public Student() { }
+        private Student(SerializationInfo info, StreamingContext context)
+        {
+            FirstName = info.GetString("fName");
+            LastName = info.GetString("lName");
+            BirthDay = new DateTime(info.GetInt32("date"));
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("fName", FirstName.ToUpper());
+            info.AddValue("lName", LastName.ToUpper());
+            info.AddValue("date", BirthDay.Year);
+        }
     }
 
 
@@ -139,7 +162,7 @@ namespace PV221_CSharp
         {
             for (int i = 0; i < students.Length; i++)
             {
-               yield return students[i];
+                yield return students[i];
             }
         }
 
@@ -186,7 +209,7 @@ namespace PV221_CSharp
 
 
     public delegate void ExamDelegate(DateTime dateTime);
-    
+
 
     class ExamEventArgs : EventArgs
     {
@@ -215,8 +238,8 @@ namespace PV221_CSharp
             {
                 list.Add((value.Target as Student).LastName, value);
             }
-            remove 
-            { 
+            remove
+            {
                 list.Remove((value.Target as Student).LastName);
             }
         }
@@ -232,5 +255,5 @@ namespace PV221_CSharp
         }
 
     }
-     
+
 }

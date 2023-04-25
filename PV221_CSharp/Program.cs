@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Channels;
+using System.Xml.Serialization;
 using PV221_CSharp.CarNC;
 
 //using static System.Console;
@@ -150,6 +153,22 @@ namespace PV221_CSharp
             return student.BirthDay.Year > 1998;
         }
 
+        public static bool AgeValid(Student student)
+        {
+            var list = typeof(Student).GetProperties()
+                .ToList()
+                .Find(a => a.Name == "BirthDay");
+
+            foreach (var item in list.GetCustomAttributes())
+            {
+                if(item is AgeValidationAttribute)
+                {
+                    return (DateTime.Now - student.BirthDay).Days / 365.25 > (item as AgeValidationAttribute).Age;
+                }
+            }
+            return false;
+        }
+
 
         //modify event NameDelegate NameEvent;
 
@@ -162,6 +181,142 @@ namespace PV221_CSharp
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Title = "PV211";
             Console.Clear();
+
+            ///////////////////////////
+            //                       //  
+            /////// 25.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+            //foreach (var item in typeof(Student).GetCustomAttributes())
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+
+            //foreach (MethodInfo item in typeof(Student).GetMethods())
+            //{
+            //    Console.WriteLine(item.Name);
+            //    foreach (var a in item.GetCustomAttributes())
+            //    {
+            //        Console.WriteLine(a);
+            //    }
+            //}
+
+            //typeof(Student).GetCustomAttributes()
+            //    .ToList()
+            //    .FindAll(a => (a as ProgrammerAttribute).Date.Month == 4)
+            //    .ForEach(p => Console.WriteLine(p));
+
+
+            List<Student> group = new List<Student>
+            {
+                new Student()
+                {
+                    LastName = "Osipov",
+                    FirstName = "Oleg",
+                    BirthDay = new DateTime(2000, 12, 15),
+                    StudentCard = new StudentCard()
+                    {
+                        Series = "AB",
+                        Number = 123456
+                    }
+                },
+
+                new Student()
+                {
+                    LastName = "Petrova",
+                    FirstName = "Maria",
+                    BirthDay = new DateTime(2002, 04, 20),
+                    StudentCard = new StudentCard()
+                    {
+                        Series = "AB",
+                        Number = 129956
+                    }
+                },
+
+                new Student()
+                {
+                    LastName = "Fedorov",
+                    FirstName = "Petro",
+                    BirthDay = new DateTime(1999, 01, 10),
+                    StudentCard = new StudentCard()
+                    {
+                        Series = "AC",
+                        Number = 123456
+                    }
+                },
+
+                new Student()
+                {
+                    LastName = "Abramova",
+                    FirstName = "Olga",
+                    BirthDay = new DateTime(2005, 12, 14),
+                    StudentCard = new StudentCard()
+                    {
+                        Series = "AA",
+                        Number = 124123
+                    }
+                }
+            };
+
+
+            //XmlSerializer xml = new(typeof(List<Student>));
+            //using (Stream stream = File.Create("students11.xml"))
+            //{
+            //    xml.Serialize(stream, group);
+            //}
+
+
+            //List<Student> st;
+            //using (Stream stream = File.OpenRead("students11.xml"))
+            //{
+            //   st = (List<Student>)xml.Deserialize(stream);
+            //}
+            //foreach (var item in st)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //================================================
+
+            BinaryFormatter bf = new BinaryFormatter();
+            //using (Stream stream = File.Create("students11.bin"))
+            //{
+            //    bf.Serialize(stream, group);
+            //}
+
+
+            List<Student> st;
+            using (Stream stream = File.OpenRead("students11.bin"))
+            {
+                st = (List<Student>)bf.Deserialize(stream);
+            }
+
+            foreach (var item in st)
+            {
+                Console.WriteLine(item);
+            }
+
+
+            //Student st = null;
+            //using (Stream stream = File.OpenRead("student.bin"))
+            //{
+            //    st = (Student)bf.Deserialize(stream);
+            //}
+
+            //Console.WriteLine(st);
+
+            //===================================================
+
+
+
+            //foreach (var item in group)
+            //{
+            //    Console.WriteLine(AgeValid(item));
+            //}
+
 
             ///////////////////////////
             //                       //  
@@ -183,15 +338,15 @@ namespace PV221_CSharp
             //string pattern = @"^([A-Z][a-z]*\s?-?){3,}$";
             //string pattern = @"^(\d{1,3}.){3}\d{1,3}$";
             //string pattern = @"^(\d{1,2}.){2}\d{4}$";
-            string pattern = @"^\+38\(0(50|66)\)\d{3}-\d{2}-\d{2}$";
+            //string pattern = @"^\+38\(0(50|66)\)\d{3}-\d{2}-\d{2}$";
 
-            Regex regex = new Regex(pattern); 
+            //Regex regex = new Regex(pattern); 
 
-            while (true)
-            {
-                string str = Console.ReadLine();
-                Console.WriteLine(regex.IsMatch(str));
-            }
+            //while (true)
+            //{
+            //    string str = Console.ReadLine();
+            //    Console.WriteLine(regex.IsMatch(str));
+            //}
 
             //int[] arr = { 3, 5, 2, 23, 5, 7, 89, 873, 54, 3, 33, 56 };
 
@@ -489,950 +644,957 @@ namespace PV221_CSharp
             //group.ForEach(s => Console.WriteLine(s));
             //Console.WriteLine();
 
-                      //group
-                      //    .FindAll(s => s.BirthDay.Month >=3 &&  s.BirthDay.Month <= 5)
-                      //    .ForEach(s => Console.WriteLine(s));
-                      //Console.WriteLine();
+            //group
+            //    .FindAll(s => s.BirthDay.Month >=3 &&  s.BirthDay.Month <= 5)
+            //    .ForEach(s => Console.WriteLine(s));
+            //Console.WriteLine();
 
 
-                      //Console.WriteLine(group.Find(s => s.BirthDay == group.Max(s => s.BirthDay)));
+            //Console.WriteLine(group.Find(s => s.BirthDay == group.Max(s => s.BirthDay)));
 
-                      //group.Sort(Student.FromBirthDay);
-                      //Console.WriteLine(group.Last());
+            //group.Sort(Student.FromBirthDay);
+            //Console.WriteLine(group.Last());
 
-                      //string st = "Hello";
-                      //Console.WriteLine(st.PadLeft(10));
-                      //Console.WriteLine(st.PadRight(10));
-                      //Console.WriteLine(st.PadCenter(10));
+            //string st = "Hello";
+            //Console.WriteLine(st.PadLeft(10));
+            //Console.WriteLine(st.PadRight(10));
+            //Console.WriteLine(st.PadCenter(10));
 
-                      //Teacher teacher = new();
-                      //foreach (Student item in group)
-                      //{
-                      //    teacher.ExamEvent += item.Exam;
-                      //}
+            //Teacher teacher = new();
+            //foreach (Student item in group)
+            //{
+            //    teacher.ExamEvent += item.Exam;
+            //}
 
-                      //teacher.Exam(new DateTime(2023, 4, 18));
-                      //teacher.Exam(new ExamEventArgs
-                      //{
-                      //    DateExam = new DateTime(2023, 4, 14),
-                      //    Subject = "C#",
-                      //    Room = "305A"
-                      //});
+            //teacher.Exam(new DateTime(2023, 4, 18));
+            //teacher.Exam(new ExamEventArgs
+            //{
+            //    DateExam = new DateTime(2023, 4, 14),
+            //    Subject = "C#",
+            //    Room = "305A"
+            //});
 
-                      //teacher.ExamEvent -= group[1].Exam;
+            //teacher.ExamEvent -= group[1].Exam;
 
-                      //teacher.Exam(new DateTime(2023, 4, 25)); 
+            //teacher.Exam(new DateTime(2023, 4, 25)); 
 
-                      //teacher.Exam(new ExamEventArgs
-                      //{
-                      //    DateExam = new DateTime(2023, 4, 20),
-                      //    Subject = "C#",
-                      //    Room = "307A"
-                      //});
+            //teacher.Exam(new ExamEventArgs
+            //{
+            //    DateExam = new DateTime(2023, 4, 20),
+            //    Subject = "C#",
+            //    Room = "307A"
+            //});
 
-                      //teacher.ExamEvent1 += Teacher_ExamEvent1;
+            //teacher.ExamEvent1 += Teacher_ExamEvent1;
 
-                      //group.ForEach(PrintFirstLastName);
+            //group.ForEach(PrintFirstLastName);
 
-                      //Console.WriteLine(group.All(s => s.BirthDay.Year > 1998));
+            //Console.WriteLine(group.All(s => s.BirthDay.Year > 1998));
 
 
-                      //var FullName = group.Select(SelectFirstLastName);
-                      //foreach (var item in FullName)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
+            //var FullName = group.Select(SelectFirstLastName);
+            //foreach (var item in FullName)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-                      //var gr = group
-                      //    .GroupBy(s => s.StudentCard.Series)
-                      //    .OrderBy(g => g.Key);
+            //var gr = group
+            //    .GroupBy(s => s.StudentCard.Series)
+            //    .OrderBy(g => g.Key);
 
-                      //foreach (var item in gr)
-                      //{
-                      //    Console.WriteLine("Series: " + item.Key);
-                      //    foreach (var item1 in item)
-                      //    {
-                      //        Console.WriteLine(item1);
-                      //    }
-                      //}
+            //foreach (var item in gr)
+            //{
+            //    Console.WriteLine("Series: " + item.Key);
+            //    foreach (var item1 in item)
+            //    {
+            //        Console.WriteLine(item1);
+            //    }
+            //}
 
-                      //var list2000 = group.FindAll(s => s.BirthDay.Year == 2000);
-                      //list2000.ForEach(s => Console.WriteLine(s));
+            //var list2000 = group.FindAll(s => s.BirthDay.Year == 2000);
+            //list2000.ForEach(s => Console.WriteLine(s));
 
 
-                      //group.Sort((s1, s2) => s1.BirthDay.CompareTo(s2.BirthDay));
-                      //group.ForEach(s => Console.WriteLine(s));
+            //group.Sort((s1, s2) => s1.BirthDay.CompareTo(s2.BirthDay));
+            //group.ForEach(s => Console.WriteLine(s));
 
 
-                      ///////////////////////////
-                      //                       //  
-                      /////// 12.04.2023  ///////
-                      //                       //
-                      ///////////////////////////
+            ///////////////////////////
+            //                       //  
+            /////// 12.04.2023  ///////
+            //                       //
+            ///////////////////////////
 
 
-                      //int[] arr = { 2, 56, 8, 54, 3, 5, 7, 8, 43 };
-                      //Console.WriteLine(MaxValue(arr));
+            //int[] arr = { 2, 56, 8, 54, 3, 5, 7, 8, 43 };
+            //Console.WriteLine(MaxValue(arr));
 
-                      // int(*name)(int, int) = func;
-                      // name();
+            // int(*name)(int, int) = func;
+            // name();
 
-                      // vector<type(*name)(param)> v;
+            // vector<type(*name)(param)> v;
 
 
-                      //A<int>.B aa = new();
+            //A<int>.B aa = new();
 
-                      //C<int>.D<string> ddd = new();
+            //C<int>.D<string> ddd = new();
 
 
-                      //Point2D<Director> p = new();
-                      //Console.WriteLine(typeof(Point2D<int>));
-
-
-
+            //Point2D<Director> p = new();
+            //Console.WriteLine(typeof(Point2D<int>));
+
+
+
 
-                      //Dictionary<string, int> dic = new()
-                      //{
-                      //    { "one", 1 },
-                      //    { "three", 3 },
-                      //    { "two", 2 }
-                      //};
-
-                      //Console.WriteLine(dic.TryAdd("oniuyte", 1));
-
-                      //foreach (var item in dic.Keys)
-                      //{
-                      //    Console.WriteLine(item + " " + dic[item]);
-                      //}
-
-
-
-
-                      ///////////////////////////
-                      //                       //  
-                      /////// 11.04.2023  ///////
-                      //                       //
-                      ///////////////////////////
-
-
-                      //using (new OperationTimer("ArrayList"))
-                      //{
-                      //    ArrayList arrayList = new ArrayList();
-                      //    for (int i = 0; i < 10000000; i++)
-                      //    {
-                      //        arrayList.Add(i);
-                      //        int val = (int)arrayList[i];
-                      //    }
-                      //    arrayList = null;
-                      //}
-
-
-                      //using (new OperationTimer("List<int>"))
-                      //{
-                      //    List<int> list = new List<int>();
-
-                      //    for (int i = 0; i < 10000000; i++)
-                      //    {
-                      //        list.Add(i);
-                      //        int val = list[i];
-                      //    }
-                      //    list = null;
-                      //}
-
-
-
-
-                      //Hashtable group = new Hashtable
-                      //{
-                      //    {
-                      //        new Student()
-                      //        {
-                      //            LastName = "Osipov",
-                      //            FirstName = "Oleg",
-                      //            BirthDay = new DateTime(2000, 12, 15),
-                      //            StudentCard = new StudentCard()
-                      //            {
-                      //                Series = "AB",
-                      //                Number = 123456
-                      //            }
-                      //        },
-                      //        new ArrayList{10, 12, 11}
-                      //    },
-                      //    {
-                      //        new Student()
-                      //        {
-                      //            LastName = "Petrova",
-                      //            FirstName = "Maria",
-                      //            BirthDay = new DateTime(2002, 04, 20),
-                      //            StudentCard = new StudentCard()
-                      //            {
-                      //                Series = "AB",
-                      //                Number = 129956
-                      //            }
-                      //        },
-                      //        new ArrayList{9, 10, 11}
-                      //    },
-                      //    {
-                      //        new Student()
-                      //        {
-                      //            LastName = "Fedorov",
-                      //            FirstName = "Petro",
-                      //            BirthDay = new DateTime(1999, 01, 10),
-                      //            StudentCard = new StudentCard()
-                      //            {
-                      //                Series = "AC",
-                      //                Number = 123456
-                      //            }
-                      //        },
-                      //        new ArrayList{12, 12, 11}
-                      //    },
-                      //    {
-                      //        new Student()
-                      //        {
-                      //            LastName = "Abramova",
-                      //            FirstName = "Olga",
-                      //            BirthDay = new DateTime(2000, 12, 14),
-                      //            StudentCard = new StudentCard()
-                      //            {
-                      //                Series = "AA",
-                      //                Number = 123451
-                      //            }
-                      //        },
-                      //        new ArrayList{6, 8, 7}
-                      //    }
-                      //};
-
-                      //PrintStudents(group);
-
-                      //AddMark(group, "Abramova", "Olga", 10);
-
-                      //AddMark(group, "Abramova", "Svitlana", 10);
-
-                      //Console.WriteLine();
-
-                      //PrintStudents(group);
-
-                      //SortedList sortedList = new();
-
-                      //sortedList.Add(10, "one");
-                      //sortedList.Add(2, "two");
-                      //sortedList.Add(1, new Student());
-                      //foreach (var item in sortedList.Keys)
-                      //{
-                      //    Console.WriteLine($"Key: {item}, Value: {sortedList[item]}");
-                      //}
+            //Dictionary<string, int> dic = new()
+            //{
+            //    { "one", 1 },
+            //    { "three", 3 },
+            //    { "two", 2 }
+            //};
+
+            //Console.WriteLine(dic.TryAdd("oniuyte", 1));
+
+            //foreach (var item in dic.Keys)
+            //{
+            //    Console.WriteLine(item + " " + dic[item]);
+            //}
+
+
+
+
+            ///////////////////////////
+            //                       //  
+            /////// 11.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+
+            //using (new OperationTimer("ArrayList"))
+            //{
+            //    ArrayList arrayList = new ArrayList();
+            //    for (int i = 0; i < 10000000; i++)
+            //    {
+            //        arrayList.Add(i);
+            //        int val = (int)arrayList[i];
+            //    }
+            //    arrayList = null;
+            //}
+
+
+            //using (new OperationTimer("List<int>"))
+            //{
+            //    List<int> list = new List<int>();
+
+            //    for (int i = 0; i < 10000000; i++)
+            //    {
+            //        list.Add(i);
+            //        int val = list[i];
+            //    }
+            //    list = null;
+            //}
+
+
+
+
+            //Hashtable group1 = new Hashtable
+            //Dictionary<Student, ArrayList> group1 = new Dictionary<Student, ArrayList>
+            //{
+            //    {
+            //        new Student()
+            //        {
+            //            LastName = "Osipov",
+            //            FirstName = "Oleg",
+            //            BirthDay = new DateTime(2000, 12, 15),
+            //            StudentCard = new StudentCard()
+            //            {
+            //                Series = "AB",
+            //                Number = 123456
+            //            }
+            //        },
+            //        new ArrayList{10, 12, 11}
+            //    },
+            //    {
+            //        new Student()
+            //        {
+            //            LastName = "Petrova",
+            //            FirstName = "Maria",
+            //            BirthDay = new DateTime(2002, 04, 20),
+            //            StudentCard = new StudentCard()
+            //            {
+            //                Series = "AB",
+            //                Number = 129956
+            //            }
+            //        },
+            //        new ArrayList{9, 10, 11}
+            //    },
+            //    {
+            //        new Student()
+            //        {
+            //            LastName = "Fedorov",
+            //            FirstName = "Petro",
+            //            BirthDay = new DateTime(1999, 01, 10),
+            //            StudentCard = new StudentCard()
+            //            {
+            //                Series = "AC",
+            //                Number = 123456
+            //            }
+            //        },
+            //        new ArrayList{12, 12, 11}
+            //    },
+            //    {
+            //        new Student()
+            //        {
+            //            LastName = "Abramova",
+            //            FirstName = "Olga",
+            //            BirthDay = new DateTime(2000, 12, 14),
+            //            StudentCard = new StudentCard()
+            //            {
+            //                Series = "AA",
+            //                Number = 123451
+            //            }
+            //        },
+            //        new ArrayList{6, 8, 7}
+            //    }
+            //};
+
+            //XmlSerializer serializer = new XmlSerializer(typeof(Dictionary<Student, ArrayList>));
+            //using(Stream s = File.Create("st.xml"))
+            //{
+            //    serializer.Serialize(s, group1 );
+            //}
+
+            //PrintStudents(group);
+
+            //AddMark(group, "Abramova", "Olga", 10);
+
+            //AddMark(group, "Abramova", "Svitlana", 10);
+
+            //Console.WriteLine();
+
+            //PrintStudents(group);
+
+            //SortedList sortedList = new();
+
+            //sortedList.Add(10, "one");
+            //sortedList.Add(2, "two");
+            //sortedList.Add(1, new Student());
+            //foreach (var item in sortedList.Keys)
+            //{
+            //    Console.WriteLine($"Key: {item}, Value: {sortedList[item]}");
+            //}
+
+
+
+            //Hashtable hashtable = new Hashtable();
+            //hashtable.Add(1, "one");
+            //hashtable.Add("two", 2);
+            //hashtable.Add(new Student(), DateTime.Now);
+
+            //foreach (var item in hashtable.Keys)
+            //{
+            //    Console.WriteLine($"Key: {item}, Value: {hashtable[item]}");
+            //}
 
-
-
-                      //Hashtable hashtable = new Hashtable();
-                      //hashtable.Add(1, "one");
-                      //hashtable.Add("two", 2);
-                      //hashtable.Add(new Student(), DateTime.Now);
 
-                      //foreach (var item in hashtable.Keys)
-                      //{
-                      //    Console.WriteLine($"Key: {item}, Value: {hashtable[item]}");
-                      //}
 
 
+            //Queue queue = new Queue(); 
 
 
-                      //Queue queue = new Queue(); 
 
 
+            //Stack stack = new();
+            //stack.Push(100);
+            //stack.Push("sfgh");
+            //stack.Push(new Student());
+            //foreach (var item in stack)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
 
-                      //Stack stack = new();
-                      //stack.Push(100);
-                      //stack.Push("sfgh");
-                      //stack.Push(new Student());
-                      //foreach (var item in stack)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
+            //ArrayList arrayList = new ArrayList(10);
+            //arrayList.Add(100);
+            //arrayList.Add("dsfsgh");
+            ////arrayList.Add(new Student());
+            //arrayList.AddRange(new object[] { "sdfg", 234, DateTime.Now });
+            //Console.WriteLine(arrayList.Capacity);
 
+            //foreach (var item in arrayList)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-                      //ArrayList arrayList = new ArrayList(10);
-                      //arrayList.Add(100);
-                      //arrayList.Add("dsfsgh");
-                      ////arrayList.Add(new Student());
-                      //arrayList.AddRange(new object[] { "sdfg", 234, DateTime.Now });
-                      //Console.WriteLine(arrayList.Capacity);
+            //arrayList.TrimToSize();
+            //Console.WriteLine(arrayList.Capacity);
 
-                      //foreach (var item in arrayList)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
+            //Console.WriteLine(arrayList.LastIndexOf("sdfg"));
 
-                      //arrayList.TrimToSize();
-                      //Console.WriteLine(arrayList.Capacity);
 
-                      //Console.WriteLine(arrayList.LastIndexOf("sdfg"));
+            ///////////////////////////
+            //                       //  
+            /////// 06.04.2023  ///////
+            //                       //
+            ///////////////////////////
 
 
-                      ///////////////////////////
-                      //                       //  
-                      /////// 06.04.2023  ///////
-                      //                       //
-                      ///////////////////////////
+            //string s = Console.ReadLine();
 
+            //int num = 0;
+            //if (s.All(c => c == '0' || c == '1'))
+            //{
+            //    for (int i = 0; i < s.Length; i++)
+            //    {
+            //        num += (s[s.Length - i - 1] - 48) * (int)Math.Pow(2, i);
+            //    }
+            //}
+            //Console.WriteLine(num);
 
-                      //string s = Console.ReadLine();
+            //GarbageGenerator gg = new GarbageGenerator();
+            //try
+            //{
+            //    gg.CreateGarbage();
+            //}
+            //finally
+            //{
+            //    gg.Dispose();
+            //}
 
-                      //int num = 0;
-                      //if (s.All(c => c == '0' || c == '1'))
-                      //{
-                      //    for (int i = 0; i < s.Length; i++)
-                      //    {
-                      //        num += (s[s.Length - i - 1] - 48) * (int)Math.Pow(2, i);
-                      //    }
-                      //}
-                      //Console.WriteLine(num);
 
-                      //GarbageGenerator gg = new GarbageGenerator();
-                      //try
-                      //{
-                      //    gg.CreateGarbage();
-                      //}
-                      //finally
-                      //{
-                      //    gg.Dispose();
-                      //}
+            //using(GarbageGenerator gg1 = new GarbageGenerator())
+            //{
+            //    gg1.CreateGarbage();
+            //}
 
 
-                      //using(GarbageGenerator gg1 = new GarbageGenerator())
-                      //{
-                      //    gg1.CreateGarbage();
-                      //}
 
+            //Console.WriteLine("Max Gen: " + GC.MaxGeneration);
 
+            //GarbageGenerator gg = new GarbageGenerator();
 
-                      //Console.WriteLine("Max Gen: " + GC.MaxGeneration);
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
 
-                      //GarbageGenerator gg = new GarbageGenerator();
+            //gg.CreateGarbage();
 
-                      //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
-                      //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
 
-                      //gg.CreateGarbage();
+            //GC.Collect(0);
 
-                      //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
-                      //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
 
-                      //GC.Collect(0);
+            //GC.Collect();
 
-                      //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
-                      //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
 
-                      //GC.Collect();
+            //GC.Collect();
 
-                      //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
-                      //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+            //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
+            //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
 
-                      //GC.Collect();
+            //byte b = 100;
 
-                      //Console.WriteLine("Gen obj: " + GC.GetGeneration(gg));
-                      //Console.WriteLine("Memory: " + GC.GetTotalMemory(false));
+            //try
+            //{
 
-                      //byte b = 100;
+            //    b = (byte)(b + 200);
 
-                      //try
-                      //{
+            //    Console.WriteLine(b);
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
 
-                      //    b = (byte)(b + 200);
 
-                      //    Console.WriteLine(b);
-                      //}
-                      //catch (Exception e)
-                      //{
-                      //    Console.WriteLine(e.Message);
-                      //}
 
 
 
+            //int n1, n2, res;
 
+            //try
+            //{
+            //    n1 = Convert.ToInt32(Console.ReadLine());
+            //    n2 = Convert.ToInt32(Console.ReadLine());
+            //    res = Div(n1, n2);
+            //    Console.WriteLine(res);
+            //}
+            //catch (Exception e) /*when (e.InnerException != null)*/
+            //{
+            //    Console.WriteLine(e.Message);
+            //    Console.WriteLine(e.StackTrace);
+            //    Console.WriteLine(e.Source);
+            //    Console.WriteLine(e.HResult);
+            //    Console.WriteLine(e.TargetSite);
+            //    foreach (var item in e.Data.Keys)
+            //    {
+            //        Console.WriteLine(item + ": " + e.Data[item]);
+            //    }
+            //    //Console.WriteLine(e.InnerException.Message);
+            //}
 
-                      //int n1, n2, res;
 
-                      //try
-                      //{
-                      //    n1 = Convert.ToInt32(Console.ReadLine());
-                      //    n2 = Convert.ToInt32(Console.ReadLine());
-                      //    res = Div(n1, n2);
-                      //    Console.WriteLine(res);
-                      //}
-                      //catch (Exception e) /*when (e.InnerException != null)*/
-                      //{
-                      //    Console.WriteLine(e.Message);
-                      //    Console.WriteLine(e.StackTrace);
-                      //    Console.WriteLine(e.Source);
-                      //    Console.WriteLine(e.HResult);
-                      //    Console.WriteLine(e.TargetSite);
-                      //    foreach (var item in e.Data.Keys)
-                      //    {
-                      //        Console.WriteLine(item + ": " + e.Data[item]);
-                      //    }
-                      //    //Console.WriteLine(e.InnerException.Message);
-                      //}
 
 
+            ///////////////////////////
+            //                       //  
+            /////// 05.04.2023  ///////
+            //                       //
+            ///////////////////////////
 
 
-                      ///////////////////////////
-                      //                       //  
-                      /////// 05.04.2023  ///////
-                      //                       //
-                      ///////////////////////////
+            //try
+            //{
+            //    throw new NotImplementedException();
+            //    int c = 5;
+            //}
+            //catch (Exception e)
+            //{
 
+            //    Console.WriteLine( e.Message);
+            //    Console.WriteLine( e.StackTrace);
+            //    Console.WriteLine( e.Source);
+            //    Console.WriteLine( e.HResult);
+            //    Console.WriteLine( e.TargetSite);
+            //}
+            //finally
+            //{
 
-                      //try
-                      //{
-                      //    throw new NotImplementedException();
-                      //    int c = 5;
-                      //}
-                      //catch (Exception e)
-                      //{
+            //}
 
-                      //    Console.WriteLine( e.Message);
-                      //    Console.WriteLine( e.StackTrace);
-                      //    Console.WriteLine( e.Source);
-                      //    Console.WriteLine( e.HResult);
-                      //    Console.WriteLine( e.TargetSite);
-                      //}
-                      //finally
-                      //{
 
-                      //}
 
 
 
 
+            //MyArray a = new MyArray(10);
+            //a.SetRandom(20, 50);
+            //Console.WriteLine(a);
 
 
-                      //MyArray a = new MyArray(10);
-                      //a.SetRandom(20, 50);
-                      //Console.WriteLine(a);
 
 
 
+            //int[] arr = { 1, 3, 6, 9, 8, 5, 3, 34, 56, 7, 90, 43 };
+            //var aaa = arr.Where(a => a > 10);
+            //Console.WriteLine(arr.Max());
+            //foreach (var item in aaa)
+            //{
+            //    Console.WriteLine(  item);
+            //}
 
 
-                      //int[] arr = { 1, 3, 6, 9, 8, 5, 3, 34, 56, 7, 90, 43 };
-                      //var aaa = arr.Where(a => a > 10);
-                      //Console.WriteLine(arr.Max());
-                      //foreach (var item in aaa)
-                      //{
-                      //    Console.WriteLine(  item);
-                      //}
 
 
 
 
+            ///////////////////////////
+            //                       //  
+            /////// 04.04.2023  ///////
+            //                       //
+            ///////////////////////////
 
 
-                      ///////////////////////////
-                      //                       //  
-                      /////// 04.04.2023  ///////
-                      //                       //
-                      ///////////////////////////
 
+            //int[] arr = { 1, 3, 6, 9, 8, 5, 3, 34, 56, 7, 90, 43 };
+            //var aaa = arr.Where(a => a > 10);
+            //Console.WriteLine(arr.Max());
+            //foreach (var item in aaa)
+            //{
+            //    Console.WriteLine(  item);
+            //}
 
 
-                      //int[] arr = { 1, 3, 6, 9, 8, 5, 3, 34, 56, 7, 90, 43 };
-                      //var aaa = arr.Where(a => a > 10);
-                      //Console.WriteLine(arr.Max());
-                      //foreach (var item in aaa)
-                      //{
-                      //    Console.WriteLine(  item);
-                      //}
+            //Student st1 = new Student
+            //{
+            //    FirstName = "",
+            //    LastName = "",
+            //    StudentCard = new StudentCard 
+            //    { 
+            //        Series = "AA", 
+            //        Number = 99 
+            //    } 
+            //};
 
+            //Student st2 = (Student)st1.Clone();
 
-                      //Student st1 = new Student
-                      //{
-                      //    FirstName = "",
-                      //    LastName = "",
-                      //    StudentCard = new StudentCard 
-                      //    { 
-                      //        Series = "AA", 
-                      //        Number = 99 
-                      //    } 
-                      //};
+            //Console.WriteLine( st1);
+            //Console.WriteLine( st2);
 
-                      //Student st2 = (Student)st1.Clone();
+            //st2.StudentCard.Series = "FF";
 
-                      //Console.WriteLine( st1);
-                      //Console.WriteLine( st2);
+            //Console.WriteLine(st1);
+            //Console.WriteLine(st2);
 
-                      //st2.StudentCard.Series = "FF";
+            //Group pv221 = new Group();
+            //foreach (Student item in pv221)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //Console.WriteLine();
 
-                      //Console.WriteLine(st1);
-                      //Console.WriteLine(st2);
+            //pv221.Sort(Student.FromBirthDay);
+            ////pv221.Sort(Student.FromStudentCard);
 
-                      //Group pv221 = new Group();
-                      //foreach (Student item in pv221)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
-                      //Console.WriteLine();
+            //foreach (Student item in pv221)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-                      //pv221.Sort(Student.FromBirthDay);
-                      ////pv221.Sort(Student.FromStudentCard);
 
-                      //foreach (Student item in pv221)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
+            //Inter inter = new Inter();
+            //inter.Show();
+            //(inter as IA).Show();
 
+            //IA ia = new Inter();
+            //ia.Show();
 
-                      //Inter inter = new Inter();
-                      //inter.Show();
-                      //(inter as IA).Show();
+            //IB ib = new Inter();
+            //ib.Show();
 
-                      //IA ia = new Inter();
-                      //ia.Show();
+            //IC ic = new Inter();
+            //ic.Show();
 
-                      //IB ib = new Inter();
-                      //ib.Show();
 
-                      //IC ic = new Inter();
-                      //ic.Show();
 
+            //Employee worker1 = new Manager();
+            //Employee worker2 = new Brigadir();
 
+            //List<Employee> workers = new List<Employee>();
+            //workers.Add(worker1);
+            //workers.Add(worker2);
 
-                      //Employee worker1 = new Manager();
-                      //Employee worker2 = new Brigadir();
+            //foreach (var item in workers)
+            //{
 
-                      //List<Employee> workers = new List<Employee>();
-                      //workers.Add(worker1);
-                      //workers.Add(worker2);
+            //    if(item is IWorker)
+            //    {
+            //        IWorker w = item as IWorker;
+            //        Console.WriteLine( w.IsWork);
+            //        w.Work();
+            //    }
 
-                      //foreach (var item in workers)
-                      //{
+            //    if(item is IManager)
+            //    {
+            //        IManager m = item as IManager;
+            //        m.CreateReport();
+            //        m.Control();
+            //    }
+            //}
 
-                      //    if(item is IWorker)
-                      //    {
-                      //        IWorker w = item as IWorker;
-                      //        Console.WriteLine( w.IsWork);
-                      //        w.Work();
-                      //    }
+            //Collection collection = new();
 
-                      //    if(item is IManager)
-                      //    {
-                      //        IManager m = item as IManager;
-                      //        m.CreateReport();
-                      //        m.Control();
-                      //    }
-                      //}
+            //Console.WriteLine(collection[2]);
 
-                      //Collection collection = new();
+            //Print(collection, 2);
 
-                      //Console.WriteLine(collection[2]);
+            ///////////////////////////
+            //                       //  
+            /////// 30.03.2023  ///////
+            //                       //
+            ///////////////////////////
 
-                      //Print(collection, 2);
 
-                      ///////////////////////////
-                      //                       //  
-                      /////// 30.03.2023  ///////
-                      //                       //
-                      ///////////////////////////
+            //Human e = new Employee("Egor", "Krutogolov", 50000);
+            //Console.WriteLine(e);
+            //e.Print();
 
+            //Human director = new Director("Egor", "Krutogolov", 50000, 3);
+            //Human[] employees = {
+            //    director,
+            //    new Economist("Olga", "Petrova", 30000, 10),
+            //    new CleaningManager("Maria", "Ivanova", 10000, 100)
+            //};
 
-                      //Human e = new Employee("Egor", "Krutogolov", 50000);
-                      //Console.WriteLine(e);
-                      //e.Print();
 
-                      //Human director = new Director("Egor", "Krutogolov", 50000, 3);
-                      //Human[] employees = {
-                      //    director,
-                      //    new Economist("Olga", "Petrova", 30000, 10),
-                      //    new CleaningManager("Maria", "Ivanova", 10000, 100)
-                      //};
+            //foreach (Human item in employees)
+            //{
+            //    Console.WriteLine(item);
+            //    item.Dancing();
 
 
-                      //foreach (Human item in employees)
-                      //{
-                      //    Console.WriteLine(item);
-                      //    item.Dancing();
+            //    //try
+            //    //{
+            //    //    ((Director)item).PrintSubordinate();
+            //    //}
+            //    //catch (Exception)
+            //    //{
+            //    //    Console.WriteLine("Not director");
+            //    //}
 
 
-                      //    //try
-                      //    //{
-                      //    //    ((Director)item).PrintSubordinate();
-                      //    //}
-                      //    //catch (Exception)
-                      //    //{
-                      //    //    Console.WriteLine("Not director");
-                      //    //}
+            //    //Economist eco = item as Economist;
+            //    //if(eco != null)
+            //    //{
+            //    //    eco.PrintExperience();
+            //    //}
+            //    //else
+            //    //{
+            //    //    Console.WriteLine("Not Economist");
+            //    //}
 
 
-                      //    //Economist eco = item as Economist;
-                      //    //if(eco != null)
-                      //    //{
-                      //    //    eco.PrintExperience();
-                      //    //}
-                      //    //else
-                      //    //{
-                      //    //    Console.WriteLine("Not Economist");
-                      //    //}
+            //    //if(item is CleaningManager)
+            //    //{
+            //    //    (item as CleaningManager).PrintCleaningArea();
+            //    //}
+            //    //else
+            //    //{
+            //    //    Console.WriteLine("Not CleaningManager");
+            //    //}
 
+            //    Console.WriteLine("=======================================");
+            //    Console.WriteLine();
+            //}
 
-                      //    //if(item is CleaningManager)
-                      //    //{
-                      //    //    (item as CleaningManager).PrintCleaningArea();
-                      //    //}
-                      //    //else
-                      //    //{
-                      //    //    Console.WriteLine("Not CleaningManager");
-                      //    //}
+            //Console.WriteLine(director.GetType().BaseType);
+            //var s = director.GetType().GetMethods();
+            //foreach (var item in s)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-                      //    Console.WriteLine("=======================================");
-                      //    Console.WriteLine();
-                      //}
+            //var s1 = director.GetType().GetConstructors();
+            //foreach (ConstructorInfo item in s1)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-                      //Console.WriteLine(director.GetType().BaseType);
-                      //var s = director.GetType().GetMethods();
-                      //foreach (var item in s)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
+            //var s2 = director.GetType().GUID;
+            //Console.WriteLine(s2);
+            //foreach (ConstructorInfo item in s1)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-                      //var s1 = director.GetType().GetConstructors();
-                      //foreach (ConstructorInfo item in s1)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
+            ///////////////////////////
+            //                       //  
+            /////// 29.03.2023  ///////
+            //                       //
+            ///////////////////////////
 
-                      //var s2 = director.GetType().GUID;
-                      //Console.WriteLine(s2);
-                      //foreach (ConstructorInfo item in s1)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
 
-                      ///////////////////////////
-                      //                       //  
-                      /////// 29.03.2023  ///////
-                      //                       //
-                      ///////////////////////////
+            //Point p = new Point { X = 10, Y = 15 };
+            //p.Print();
+            //Point p2 = -p;
+            //p2.Print();
 
+            //p2++;
+            //p2.Print();
 
-                      //Point p = new Point { X = 10, Y = 15 };
-                      //p.Print();
-                      //Point p2 = -p;
-                      //p2.Print();
+            //++p2;
+            //p2.Print();
 
-                      //p2++;
-                      //p2.Print();
+            //(+p2).Print();
 
-                      //++p2;
-                      //p2.Print();
+            //(++p2).Print();
 
-                      //(+p2).Print();
+            //Point p1 = new Point { X = 3, Y = 5 };
 
-                      //(++p2).Print();
+            //Point p3 = p + p1;
+            //p3.Print();
 
-                      //Point p1 = new Point { X = 3, Y = 5 };
+            //p += p1; // p = p + p1;
+            //p.Print();
 
-                      //Point p3 = p + p1;
-                      //p3.Print();
+            //p3 = p + 44;
+            //p3 = 44 + p;
 
-                      //p += p1; // p = p + p1;
-                      //p.Print();
+            //p += 44;
 
-                      //p3 = p + 44;
-                      //p3 = 44 + p;
 
-                      //p += 44;
 
+            //Point p = new Point { X = 10, Y = 15 };
+            //Point p1 = p;
+            //Console.WriteLine(ReferenceEquals(p, p1));
+            //Console.WriteLine(p.Equals(p1));
 
+            //Console.WriteLine(p1);
 
-                      //Point p = new Point { X = 10, Y = 15 };
-                      //Point p1 = p;
-                      //Console.WriteLine(ReferenceEquals(p, p1));
-                      //Console.WriteLine(p.Equals(p1));
+            //if(p1 && p)
+            //{
+            //    Console.WriteLine(p);
+            //}
 
-                      //Console.WriteLine(p1);
+            //bool b = (bool)p1;
 
-                      //if(p1 && p)
-                      //{
-                      //    Console.WriteLine(p);
-                      //}
+            //double d = p;
 
-                      //bool b = (bool)p1;
+            //p = 10;
 
-                      //double d = p;
+            //Stud st = new Stud();
+            //p = (Point)st;
 
-                      //p = 10;
+            //string st = null;
+            //int? c = null;
+            //Console.WriteLine(c);
+            //c = c ?? 30;
 
-                      //Stud st = new Stud();
-                      //p = (Point)st;
 
-                      //string st = null;
-                      //int? c = null;
-                      //Console.WriteLine(c);
-                      //c = c ?? 30;
+            //Polygon p = new Polygon(5);
+            //Console.WriteLine(p);
+            //Console.WriteLine(p["one"]);
+            //p[3] = new Point { X = 4, Y = 5 };
+            //Console.WriteLine(p["one"]);
+            ////p["one"] = new Point { X = 5, Y = 6 };
 
 
-                      //Polygon p = new Polygon(5);
-                      //Console.WriteLine(p);
-                      //Console.WriteLine(p["one"]);
-                      //p[3] = new Point { X = 4, Y = 5 };
-                      //Console.WriteLine(p["one"]);
-                      ////p["one"] = new Point { X = 5, Y = 6 };
+            //Matrix m = new(3, 4);
+            //Console.WriteLine(m[2,2]);
+            //m[2, 1] = 100;
 
 
-                      //Matrix m = new(3, 4);
-                      //Console.WriteLine(m[2,2]);
-                      //m[2, 1] = 100;
+            ///////////////////////////
+            //                       //  
+            /////// 28.03.2023  ///////
+            //                       //
+            ///////////////////////////
 
+            //Stud st = new Stud()
+            //{
+            //    FirstName = "Oleg",
+            //    LastName = "Zubkov",
+            //    Group = "PV221"
+            //};
 
-                      ///////////////////////////
-                      //                       //  
-                      /////// 28.03.2023  ///////
-                      //                       //
-                      ///////////////////////////
 
-                      //Stud st = new Stud()
-                      //{
-                      //    FirstName = "Oleg",
-                      //    LastName = "Zubkov",
-                      //    Group = "PV221"
-                      //};
+            //st.AddMark(course: Course.Admin, mark: 12);
+            //st.AddMark(course: Course.Programm, mark: 11);
+            //st.AddMark(course: Course.Programm, mark: 10);
+            //st.AddMark(course: Course.Design, mark: 12);
+            //st.AddMark(course: Course.Programm, mark: 8);
+            //st.AddMark(course: Course.Admin, mark: 10);
 
+            //Print(st, 2);
 
-                      //st.AddMark(course: Course.Admin, mark: 12);
-                      //st.AddMark(course: Course.Programm, mark: 11);
-                      //st.AddMark(course: Course.Programm, mark: 10);
-                      //st.AddMark(course: Course.Design, mark: 12);
-                      //st.AddMark(course: Course.Programm, mark: 8);
-                      //st.AddMark(course: Course.Admin, mark: 10);
+            //st.Info();
 
-                      //Print(st, 2);
+            //Console.WriteLine(st.GetLastMark(Course.Programm));
 
-                      //st.Info();
+            //Console.WriteLine(Math.Round(st.GetAvarageCourse(Course.Programm), 1));
 
-                      //Console.WriteLine(st.GetLastMark(Course.Programm));
+            //st[Course.Programm] = "9";
 
-                      //Console.WriteLine(Math.Round(st.GetAvarageCourse(Course.Programm), 1));
+            //Console.WriteLine(st[Course.Programm]);
 
-                      //st[Course.Programm] = "9";
+            //Car car = new Car() 
+            //{ 
+            //    Vendor = "BMW", 
+            //    Model = "X7", 
+            //    Year = 2023
+            //};
 
-                      //Console.WriteLine(st[Course.Programm]);
+            //car.Print();
 
-                      //Car car = new Car() 
-                      //{ 
-                      //    Vendor = "BMW", 
-                      //    Model = "X7", 
-                      //    Year = 2023
-                      //};
+            //CarNC.NC3.CargoCar cc = new();
+            //NC4.CargoCar ccc = new();
 
-                      //car.Print();
 
-                      //CarNC.NC3.CargoCar cc = new();
-                      //NC4.CargoCar ccc = new();
+            ///////////////////////////
+            //                       //  
+            /////// 23.03.2023  ///////
+            //                       //
+            ///////////////////////////
 
 
-                      ///////////////////////////
-                      //                       //  
-                      /////// 23.03.2023  ///////
-                      //                       //
-                      ///////////////////////////
+            //int a = 9;
+            //int b;
+            //int[] arr = { 1, 2, 3 };
+            //Func(ref a, ref arr, out b);
 
+            //Console.WriteLine(a);
 
-                      //int a = 9;
-                      //int b;
-                      //int[] arr = { 1, 2, 3 };
-                      //Func(ref a, ref arr, out b);
+            //foreach (var item in arr)
+            //{
+            //    Console.Write(item + " ");
+            //}
+            //Console.WriteLine();
 
-                      //Console.WriteLine(a);
+            //Console.WriteLine( b);
 
-                      //foreach (var item in arr)
-                      //{
-                      //    Console.Write(item + " ");
-                      //}
-                      //Console.WriteLine();
+            //Console.WriteLine(  Sum(1,2, 3 ,4,5,6)  );
 
-                      //Console.WriteLine( b);
 
-                      //Console.WriteLine(  Sum(1,2, 3 ,4,5,6)  );
+            ////Student.SetPlanet("Mars");
 
+            //Student st;
+            //st = new Student();
 
-                      ////Student.SetPlanet("Mars");
+            //Console.WriteLine(st.Name);
+            //st.Name = "Oleg";
 
-                      //Student st;
-                      //st = new Student();
+            //st.Print();
+            //Console.WriteLine(st.group_id);
+            //st.arr[0] = 100;
 
-                      //Console.WriteLine(st.Name);
-                      //st.Name = "Oleg";
+            //Console.WriteLine(Student.GetPlanet());
+            //Console.WriteLine(Student.group);
 
-                      //st.Print();
-                      //Console.WriteLine(st.group_id);
-                      //st.arr[0] = 100;
 
-                      //Console.WriteLine(Student.GetPlanet());
-                      //Console.WriteLine(Student.group);
 
 
+            //Student p = new Student();
+            //Student p2 = p;
+            //p2.x = 10;
+            //Console.WriteLine(p.x);
 
 
-                      //Student p = new Student();
-                      //Student p2 = p;
-                      //p2.x = 10;
-                      //Console.WriteLine(p.x);
 
+            //Direction direction = Direction.Down;
+            //Console.WriteLine(direction);
 
+            //Enum.GetNames(typeof(Direction));
+            //var arr = Enum.GetValues(typeof(Direction));
+            //foreach (Direction item in arr)
+            //{
+            //    Console.WriteLine( (int)item);
+            //}
 
-                      //Direction direction = Direction.Down;
-                      //Console.WriteLine(direction);
 
-                      //Enum.GetNames(typeof(Direction));
-                      //var arr = Enum.GetValues(typeof(Direction));
-                      //foreach (Direction item in arr)
-                      //{
-                      //    Console.WriteLine( (int)item);
-                      //}
 
 
+            //int a = Convert.ToInt32(Console.ReadLine());
+            //int b = Convert.ToInt32(Console.ReadLine());
+            //int c = a + b;
+            //Console.WriteLine(c);
 
 
-                      //int a = Convert.ToInt32(Console.ReadLine());
-                      //int b = Convert.ToInt32(Console.ReadLine());
-                      //int c = a + b;
-                      //Console.WriteLine(c);
+            //Console.WriteLine($"");
 
+            //int d = 9;
+            //if (d == 0)
+            //{
 
-                      //Console.WriteLine($"");
+            //}
 
-                      //int d = 9;
-                      //if (d == 0)
-                      //{
+            //string dd = "eee";
 
-                      //}
+            //switch (dd)
+            //{
+            //    case "ddd":
+            //        Console.WriteLine(0);
+            //        break;
+            //    case "er":
+            //    case "fgfgfg":
+            //        Console.WriteLine(1);
+            //        break;
+            //    default:
+            //        break;
+            //}
 
-                      //string dd = "eee";
+            //int mm = d > 10 ? 12 : 23;
 
-                      //switch (dd)
-                      //{
-                      //    case "ddd":
-                      //        Console.WriteLine(0);
-                      //        break;
-                      //    case "er":
-                      //    case "fgfgfg":
-                      //        Console.WriteLine(1);
-                      //        break;
-                      //    default:
-                      //        break;
-                      //}
+            //int[] arr = new int[10];
+            //Random random = new Random();
+            //for (int i = 0; i < arr.Length; i++)
+            //{
+            //    arr[i] = random.Next(10, 30);
+            //}
 
-                      //int mm = d > 10 ? 12 : 23;
+            ////while (true)
+            ////{
 
-                      //int[] arr = new int[10];
-                      //Random random = new Random();
-                      //for (int i = 0; i < arr.Length; i++)
-                      //{
-                      //    arr[i] = random.Next(10, 30);
-                      //}
+            ////}
 
-                      ////while (true)
-                      ////{
+            ////do
+            ////{
 
-                      ////}
+            ////} while (true);
 
-                      ////do
-                      ////{
+            //foreach (var item in arr)
+            //{
+            //    Console.Write(item + " ");
+            //}
 
-                      ////} while (true);
 
-                      //foreach (var item in arr)
-                      //{
-                      //    Console.Write(item + " ");
-                      //}
+            //DateTime dd = DateTime.Now;
+            //Console.WriteLine(dd);
+            //Console.WriteLine(dd.ToLongDateString());
+            //Console.WriteLine(dd.ToLongTimeString());
+            //Console.WriteLine(dd.ToShortDateString());
+            //Console.WriteLine(dd.ToShortTimeString());
+            //Console.WriteLine(dd.ToUniversalTime());
+            //dd = Convert.ToDateTime(Console.ReadLine());
+            //Console.WriteLine(dd);
 
 
-                      //DateTime dd = DateTime.Now;
-                      //Console.WriteLine(dd);
-                      //Console.WriteLine(dd.ToLongDateString());
-                      //Console.WriteLine(dd.ToLongTimeString());
-                      //Console.WriteLine(dd.ToShortDateString());
-                      //Console.WriteLine(dd.ToShortTimeString());
-                      //Console.WriteLine(dd.ToUniversalTime());
-                      //dd = Convert.ToDateTime(Console.ReadLine());
-                      //Console.WriteLine(dd);
 
+            //int a = Int32.Parse(Console.ReadLine());
+            //bool b = Int32.TryParse(Console.ReadLine(), out a);
+            //if (b)
+            //{
+            //    Console.WriteLine(a);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Error");
+            //}
 
 
-                      //int a = Int32.Parse(Console.ReadLine());
-                      //bool b = Int32.TryParse(Console.ReadLine(), out a);
-                      //if (b)
-                      //{
-                      //    Console.WriteLine(a);
-                      //}
-                      //else
-                      //{
-                      //    Console.WriteLine("Error");
-                      //}
 
+            //int[] arr = new int[10] { 1, 2, 4, 6, 7, 5, 4, 3, 2, 1 };
+            //int[] arr = { 1, 2, 4, 6, 7, 5, 4, 3, 2, 1 };
+            //Array.Sort(arr);
+            //foreach (var item in arr)
+            //{
+            //    Console.Write(item + " ");
+            //}
+            //Console.WriteLine();
 
+            //Console.WriteLine();
 
-                      //int[] arr = new int[10] { 1, 2, 4, 6, 7, 5, 4, 3, 2, 1 };
-                      //int[] arr = { 1, 2, 4, 6, 7, 5, 4, 3, 2, 1 };
-                      //Array.Sort(arr);
-                      //foreach (var item in arr)
-                      //{
-                      //    Console.Write(item + " ");
-                      //}
-                      //Console.WriteLine();
+            //Console.WriteLine(Array.BinarySearch(arr, 6));
 
-                      //Console.WriteLine();
 
-                      //Console.WriteLine(Array.BinarySearch(arr, 6));
+            //int[,] arr = new int[3, 4] { {1,2,3,4 },{ 5,6,7,8},{ 1,2,4,7} };
+            //Console.WriteLine(arr.GetLength(0));
+            //Console.WriteLine(arr.GetLength(1));
+            //for (int i = 0; i < arr.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < arr.GetLength(1); j++)
+            //    {
+            //        Console.Write(arr[i,j] + " ");
+            //    }
+            //    Console.WriteLine();
+            //}
 
 
-                      //int[,] arr = new int[3, 4] { {1,2,3,4 },{ 5,6,7,8},{ 1,2,4,7} };
-                      //Console.WriteLine(arr.GetLength(0));
-                      //Console.WriteLine(arr.GetLength(1));
-                      //for (int i = 0; i < arr.GetLength(0); i++)
-                      //{
-                      //    for (int j = 0; j < arr.GetLength(1); j++)
-                      //    {
-                      //        Console.Write(arr[i,j] + " ");
-                      //    }
-                      //    Console.WriteLine();
-                      //}
+            //int[][] arr = new int[4][];
+            //arr[0] = new int[3];
+            //arr[1] = new int[5];
+            //arr[2] = new int[2];
+            //arr[3] = new int[6];
+            //Random random = new Random();
+            //for (int i = 0; i < arr.Length; i++)
+            //{
+            //    for (int j = 0; j < arr[i].Length; j++)
+            //    {
+            //        arr[i][j] = random.Next(100, 900);
+            //        Console.Write($"{arr[i][j]}".PadLeft(5));
+            //    }
+            //    Console.WriteLine( );
+            //}
 
+            //int[] arr1 = new int[10] { 1, 2, 4, 6, 7, 5, 4, 3, 2, 1 };
+            //string st = "123+456";
+            //Console.WriteLine(st.IndexOfAny("*-+/".ToCharArray()));
+            //string[] arr = st.Split("*-+/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            //foreach (var item in arr)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //Console.WriteLine(st.EndsWith("му"));
+            //string ss = String.Join(", ", arr1);
+            //Console.WriteLine(ss);
 
-                      //int[][] arr = new int[4][];
-                      //arr[0] = new int[3];
-                      //arr[1] = new int[5];
-                      //arr[2] = new int[2];
-                      //arr[3] = new int[6];
-                      //Random random = new Random();
-                      //for (int i = 0; i < arr.Length; i++)
-                      //{
-                      //    for (int j = 0; j < arr[i].Length; j++)
-                      //    {
-                      //        arr[i][j] = random.Next(100, 900);
-                      //        Console.Write($"{arr[i][j]}".PadLeft(5));
-                      //    }
-                      //    Console.WriteLine( );
-                      //}
+            //String sss = st;
 
-                      //int[] arr1 = new int[10] { 1, 2, 4, 6, 7, 5, 4, 3, 2, 1 };
-                      //string st = "123+456";
-                      //Console.WriteLine(st.IndexOfAny("*-+/".ToCharArray()));
-                      //string[] arr = st.Split("*-+/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                      //foreach (var item in arr)
-                      //{
-                      //    Console.WriteLine(item);
-                      //}
-                      //Console.WriteLine(st.EndsWith("му"));
-                      //string ss = String.Join(", ", arr1);
-                      //Console.WriteLine(ss);
 
-                      //String sss = st;
-
-
-                      //StringBuilder sb = new StringBuilder();
+            //StringBuilder sb = new StringBuilder();
 
         }
 
