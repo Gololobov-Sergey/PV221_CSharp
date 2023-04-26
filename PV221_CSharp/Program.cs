@@ -8,6 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Channels;
+using System.Xml;
 using System.Xml.Serialization;
 using PV221_CSharp.CarNC;
 
@@ -24,7 +25,7 @@ namespace PV221_CSharp
             Up, Down, Left, Right
         }
 
-        
+
         public static void Func(ref int i, ref int[] arr, out int b)
         {
             Console.WriteLine(i);
@@ -161,7 +162,7 @@ namespace PV221_CSharp
 
             foreach (var item in list.GetCustomAttributes())
             {
-                if(item is AgeValidationAttribute)
+                if (item is AgeValidationAttribute)
                 {
                     return (DateTime.Now - student.BirthDay).Days / 365.25 > (item as AgeValidationAttribute).Age;
                 }
@@ -172,6 +173,30 @@ namespace PV221_CSharp
 
         //modify event NameDelegate NameEvent;
 
+
+        static void printNode(XmlNode node)
+        {
+            Console.WriteLine($"{node.NodeType}".PadRight(15) + $"{node.Name}".PadRight(15) + $"{node.Value}".PadRight(15));
+            
+            if(node.Attributes != null)
+            {
+                foreach (XmlNode item in node.Attributes)
+                {
+                    Console.WriteLine($"{item.NodeType}".PadRight(15) + $"{item.Name}".PadRight(15) + $"{item.Value}".PadRight(15));
+                }
+            }
+
+            if(node.HasChildNodes)
+            {
+                foreach (XmlNode item in node.ChildNodes)
+                {
+                    printNode(item);
+                }
+            }
+        }
+
+
+
         static void Main(string[] args)
         {
 
@@ -181,6 +206,152 @@ namespace PV221_CSharp
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Title = "PV211";
             Console.Clear();
+
+            ///////////////////////////
+            //                       //  
+            /////// 26.04.2023  ///////
+            //                       //
+            ///////////////////////////
+
+            //// XML //////
+            ///
+            // DOM
+            //============================================================
+
+
+            XmlDocument xml = new XmlDocument();
+            xml.Load("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange");
+            //printNode(xml.DocumentElement);
+
+            var name = xml.GetElementsByTagName("txt");
+            var rate = xml.GetElementsByTagName("rate");
+            for (int i = 0; i < name.Count; i++)
+            {
+                if (Convert.ToDecimal(rate[i].InnerText.Replace('.', ',')) > 20M)
+                {
+                    Console.WriteLine($"{name[i].InnerText.PadRight(30)} {rate[i].InnerText}");
+                }
+            }
+
+
+            //XmlDocument xml = new XmlDocument();
+            //xml.Load("Computers.xml");
+            //XmlNode root = xml.DocumentElement;
+
+            ////printNode(xml.DocumentElement);
+
+
+            //XmlNode comp = xml.CreateElement("Computer");
+            //XmlAttribute attr = xml.CreateAttribute("Type");
+            //attr.Value = "Office";
+            //comp.Attributes.Append(attr);
+
+            //XmlNode comp1 = xml.CreateElement("Motheboard");
+            //XmlNode comp2 = xml.CreateElement("Processor");
+            //XmlNode comp3 = xml.CreateElement("RAM");
+            //XmlNode comp4 = xml.CreateElement("SSD");
+            //XmlNode comp5 = xml.CreateElement("Video");
+
+            //XmlNode text1 = xml.CreateTextNode("Gigabyte");
+            //XmlNode text2 = xml.CreateTextNode("Intel Celeron");
+            //XmlNode text3 = xml.CreateTextNode("8Gb");
+            //XmlNode text4 = xml.CreateTextNode("128Gb");
+            //XmlNode text5 = xml.CreateTextNode("Integred");
+
+            //comp1.AppendChild(text1);
+            //comp2.AppendChild(text2);
+            //comp3.AppendChild(text3);
+            //comp4.AppendChild(text4);
+            //comp5.AppendChild(text5);
+
+            //comp.AppendChild(comp1);
+            //comp.AppendChild(comp2);
+            //comp.AppendChild(comp3);
+            //comp.AppendChild(comp4);
+            //comp.AppendChild(comp5);
+
+            //root.AppendChild(comp);
+
+            //xml.Save("Computers.xml");
+
+
+            //  SAX 
+            //============================================================
+            //XmlTextWriter xml = new XmlTextWriter("Computers.xml", Encoding.Unicode);
+            //xml.Formatting = Formatting.Indented;
+            //xml.WriteStartDocument();
+            //xml.WriteStartElement("Computers");
+            /////
+            //    xml.WriteStartElement("Computer");
+            //        xml.WriteAttributeString("Type", "Home");
+            //        xml.WriteElementString("Motheboard", "MSI");
+            //        xml.WriteElementString("Processor", "Intel Core i5");
+            //        xml.WriteElementString("RAM", "64Gb");
+            //        xml.WriteElementString("SSD", "512Gb");
+            //        xml.WriteElementString("Video", "Radeon");
+            //    xml.WriteEndElement();
+
+            //    xml.WriteStartElement("Computer");
+            //        xml.WriteAttributeString("Type", "Game");
+            //        xml.WriteElementString("Motheboard", "ASUS");
+            //        xml.WriteElementString("Processor", "AMD Razen 7");
+            //        xml.WriteElementString("RAM", "128Gb");
+            //        xml.WriteElementString("SSD", "4Tb");
+            //        xml.WriteElementString("Video", "NVidia");
+            //    xml.WriteEndElement();
+
+            //xml.WriteEndElement();
+            //xml.Close();    
+
+
+
+            //XmlTextReader xml = new XmlTextReader("Computers.xml");
+            //xml.WhitespaceHandling = WhitespaceHandling.None;
+
+            //while(xml.Read())
+            //{
+            //    Console.WriteLine($"{xml.NodeType.ToString().PadRight(15)} {xml.Name.ToString().PadRight(15)} {xml.Value.ToString().PadRight(15)}");
+            //    if(xml.AttributeCount > 0)
+            //    {
+            //        while(xml.MoveToNextAttribute())
+            //        {
+            //            Console.WriteLine($"{xml.NodeType.ToString().PadRight(15)} {xml.Name.ToString().PadRight(15)} {xml.Value.ToString().PadRight(15)}");
+            //        }
+            //    }
+            //}
+
+
+            //================================================================
+
+
+            //List<string> typeComp = new List<string>();
+
+            //while (xml.Read())
+            //{
+            //    if (xml.NodeType == XmlNodeType.Element && xml.Name == "Computer" && xml.HasAttributes)
+            //    {
+            //        while(xml.MoveToNextAttribute()) 
+            //        { 
+            //            if(xml.Name == "Type")
+            //            {
+            //                if (!typeComp.Contains(xml.Value))
+            //                {
+            //                    typeComp.Add(xml.Value);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            //typeComp.ForEach(comp => { Console.WriteLine(comp); });
+
+            // typeComp.Distinct();
+
+
+
+
+
+
 
             ///////////////////////////
             //                       //  
@@ -210,56 +381,56 @@ namespace PV221_CSharp
             //    .ForEach(p => Console.WriteLine(p));
 
 
-            List<Student> group = new List<Student>
-            {
-                new Student()
-                {
-                    LastName = "Osipov",
-                    FirstName = "Oleg",
-                    BirthDay = new DateTime(2000, 12, 15),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AB",
-                        Number = 123456
-                    }
-                },
+            //List<Student> group = new List<Student>
+            //{
+            //    new Student()
+            //    {
+            //        LastName = "Osipov",
+            //        FirstName = "Oleg",
+            //        BirthDay = new DateTime(2000, 12, 15),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AB",
+            //            Number = 123456
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Petrova",
-                    FirstName = "Maria",
-                    BirthDay = new DateTime(2002, 04, 20),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AB",
-                        Number = 129956
-                    }
-                },
+            //    new Student()
+            //    {
+            //        LastName = "Petrova",
+            //        FirstName = "Maria",
+            //        BirthDay = new DateTime(2002, 04, 20),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AB",
+            //            Number = 129956
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Fedorov",
-                    FirstName = "Petro",
-                    BirthDay = new DateTime(1999, 01, 10),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AC",
-                        Number = 123456
-                    }
-                },
+            //    new Student()
+            //    {
+            //        LastName = "Fedorov",
+            //        FirstName = "Petro",
+            //        BirthDay = new DateTime(1999, 01, 10),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AC",
+            //            Number = 123456
+            //        }
+            //    },
 
-                new Student()
-                {
-                    LastName = "Abramova",
-                    FirstName = "Olga",
-                    BirthDay = new DateTime(2005, 12, 14),
-                    StudentCard = new StudentCard()
-                    {
-                        Series = "AA",
-                        Number = 124123
-                    }
-                }
-            };
+            //    new Student()
+            //    {
+            //        LastName = "Abramova",
+            //        FirstName = "Olga",
+            //        BirthDay = new DateTime(2005, 12, 14),
+            //        StudentCard = new StudentCard()
+            //        {
+            //            Series = "AA",
+            //            Number = 124123
+            //        }
+            //    }
+            //};
 
 
             //XmlSerializer xml = new(typeof(List<Student>));
@@ -281,23 +452,23 @@ namespace PV221_CSharp
 
             //================================================
 
-            BinaryFormatter bf = new BinaryFormatter();
+            //BinaryFormatter bf = new BinaryFormatter();
             //using (Stream stream = File.Create("students11.bin"))
             //{
             //    bf.Serialize(stream, group);
             //}
 
 
-            List<Student> st;
-            using (Stream stream = File.OpenRead("students11.bin"))
-            {
-                st = (List<Student>)bf.Deserialize(stream);
-            }
+            //List<Student> st;
+            //using (Stream stream = File.OpenRead("students11.bin"))
+            //{
+            //    st = (List<Student>)bf.Deserialize(stream);
+            //}
 
-            foreach (var item in st)
-            {
-                Console.WriteLine(item);
-            }
+            //foreach (var item in st)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
 
             //Student st = null;
