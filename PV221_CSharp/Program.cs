@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Channels;
 using System.Xml;
@@ -196,6 +197,19 @@ namespace PV221_CSharp
         }
 
 
+        static string GetValueTag(XmlTextReader reader, string tag)
+        {
+            while(reader.Read())
+            {
+                if(reader.NodeType == XmlNodeType.Element && reader.Name == tag)
+                {
+                    reader.Read();
+                    return reader.Value;
+                }
+            }
+            return null;
+        }
+
 
         static void Main(string[] args)
         {
@@ -215,23 +229,51 @@ namespace PV221_CSharp
 
             //// XML //////
             ///
+
+            XmlTextReader xml = new XmlTextReader("dczvac20230427091226567.xml");
+            xml.WhitespaceHandling = WhitespaceHandling.None;
+
+            List<Job> jobs = new List<Job>();   
+
+            while(xml.Read())
+            {
+                if (xml.NodeType == XmlNodeType.Element && xml.Name == "job")
+                {
+                    Job job = new Job();
+                    xml.MoveToAttribute(0);
+                    job.ID = Convert.ToInt64(xml.Value);
+                    job.Name = new String(GetValueTag(xml, "name").Skip(8).SkipLast(2).ToArray());
+                    job.Salary = Convert.ToDecimal(new String(GetValueTag(xml, "salary").Skip(8).SkipLast(2).ToArray()).Split('₴')[0].Replace('.',','));
+                    jobs.Add(job);
+                }
+            }
+
+            jobs.Sort((j1, j2) => j2.Salary.CompareTo(j1.Salary));
+
+            for (int i = 0; i < 20; i++)
+            {
+                Console.WriteLine(jobs[i]);
+            }
+
+            Console.WriteLine(jobs.Count);
+
             // DOM
             //============================================================
 
 
-            XmlDocument xml = new XmlDocument();
-            xml.Load("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange");
-            //printNode(xml.DocumentElement);
+            //XmlDocument xml = new XmlDocument();
+            //xml.Load("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange");
+            ////printNode(xml.DocumentElement);
 
-            var name = xml.GetElementsByTagName("txt");
-            var rate = xml.GetElementsByTagName("rate");
-            for (int i = 0; i < name.Count; i++)
-            {
-                if (Convert.ToDecimal(rate[i].InnerText.Replace('.', ',')) > 20M)
-                {
-                    Console.WriteLine($"{name[i].InnerText.PadRight(30)} {rate[i].InnerText}");
-                }
-            }
+            //var name = xml.GetElementsByTagName("txt");
+            //var rate = xml.GetElementsByTagName("rate");
+            //for (int i = 0; i < name.Count; i++)
+            //{
+            //    if (Convert.ToDecimal(rate[i].InnerText.Replace('.', ',')) > 20M)
+            //    {
+            //        Console.WriteLine($"{name[i].InnerText.PadRight(30)} {rate[i].InnerText}");
+            //    }
+            //}
 
 
             //XmlDocument xml = new XmlDocument();
